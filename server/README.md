@@ -4,6 +4,9 @@ Node.js, typescript, unit test
 # How to test
 npm test
 
+# Test sample
+socket.io: https://stackoverflow.com/questions/36707566/how-to-test-node-js-websocket-server-with-mocha
+
 # Reference
 Socket.io Chat: https://kknews.cc/zh-tw/code/z98oezq.html
 Typescript: https://ts.xcatliu.com/basics/type-assertion.html

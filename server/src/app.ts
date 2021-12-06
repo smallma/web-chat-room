@@ -15,27 +15,29 @@ function getDate() {
 
 var server = ws.createServer(function(conn: any) {
   conn.on("text", function(obj: any) {
+    const getTime = new Date().getTime();
     console.log(obj);
     // obj = JSON.parse(obj);
     if (obj.type === 1) {
       users.push({
         nickname: obj.nickname,
-        uid: obj.uid
       });
+
       boardcast({
         type: 1,
+        msgid: getTime,
         date: getDate(),
-        msg: obj.nickname + '加入聊天室',
+        msg: obj.nickname + ' join chat room',
         users: users,
-        uid: obj.uid,
         nickname: obj.nickname
       });
     } else {
       boardcast({
         type: 2,
+        msgid: getTime,
         date: getDate(),
         msg: obj.msg,
-        uid: obj.uid,
+        users: users,
         nickname: obj.nickname
       });
     }
