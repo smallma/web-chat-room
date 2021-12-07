@@ -8,6 +8,9 @@
 </script>
 
 <script lang="ts">
+  // import Socket from "./utils/socket";
+  import { mapMutations } from "vuex";
+
   export default {
     data() {
       return {
@@ -15,7 +18,26 @@
         userInfo: {}
       }
     },
+    created() {
+      const wsUrl = process.env.VUE_APP_WS_URL;
+      const socket = new WebSocket(wsUrl);
+      const that = this;
+      socket.onmessage = function(msg) {
+        console.log(msg);
+        that.handleGetMessage(msg.data);
+      };
+      // Socket.$on("message", this.handleGetMessage);
+    },
+    beforeDestroy() {
+      // Socket.$off("message", this.handleGetMessage);
+    },
     methods: {
+      ...mapMutations({
+        setWsRes: "ws/setWsRes",
+      }),
+      handleGetMessage(msg) {
+        this.setWsRes(JSON.parse(msg));
+      },
       updateLoginInfo: function(info: any) {
         console.log('updateLoginInfo', info);
         this.userInfo = info;

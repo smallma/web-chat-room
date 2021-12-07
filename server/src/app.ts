@@ -1,55 +1,100 @@
-var ws = require("nodejs-websocket");
+// const WebSocket = require('ws');
+import { WebSocketServer, OPEN } from 'ws';
 const moment = require("moment");
 
-let users: any[] = []; 
+type userType = { nickname: string };
+let Users:userType[] = [];
 
-function boardcast(obj: any) {
-  server.connections.forEach(function(conn: any) {
-    conn.sendText(JSON.stringify(obj));
-  })
+function getDate():string {
+  return moment().format('HH:mm')
 }
 
-function getDate() {
-  return moment().format('YYYY-MM-DD HH:mm:ss')
+function handleServerOpen(event: any): void {
+  console.log('connected');
 }
 
-var server = ws.createServer(function(conn: any) {
-  conn.on("text", function(obj: any) {
-    const getTime = new Date().getTime();
-    console.log(obj);
-    // obj = JSON.parse(obj);
-    if (obj.type === 1) {
-      users.push({
-        nickname: obj.nickname,
-      });
+function handleServerClose(event: any): void {
+  console.log('disconnected');
+}
 
-      boardcast({
-        type: 1,
-        msgid: getTime,
-        date: getDate(),
-        msg: obj.nickname + ' join chat room',
-        users: users,
-        nickname: obj.nickname
-      });
-    } else {
-      boardcast({
-        type: 2,
-        msgid: getTime,
-        date: getDate(),
-        msg: obj.msg,
-        users: users,
-        nickname: obj.nickname
-      });
-    }
-  })
-  
-  conn.on("close", function(code: any, reason: any) {
-    console.log("關閉連接")
+function handleBroadcastMsg(server: any, msg: string):void {
+  server.clients.forEach(function each(client: any) {
+    // if (client.readyState === OPEN) {
+    client.send(msg);
+    // }
   });
-  
-  conn.on("error", function(code: any, reason: any) {
-    console.log("異常關閉")
-  });
-}).listen(8001);
+}
 
-console.log("WebSocket建立完畢")
+function handleType1Msg(jsonMsg: any):any {
+  const getTime = new Date().getTime();
+  Users.push({
+    nickname: jsonMsg.nickname,
+  });
+
+  const broadcastMsg = {
+    type: 1,
+    msgid: getTime,
+    date: getDate(),
+    msg: jsonMsg.nickname + ' join chat room',
+    users: Users,
+    nickname: jsonMsg.nickname
+  };
+  
+  return broadcastMsg;
+}
+
+function handleType2Msg(jsonMsg: any):any {
+  const getTime = new Date().getTime();
+
+  const broadcastMsg = {
+    type: 2,
+    msgid: getTime,
+    date: getDate(),
+    msg: jsonMsg.msg,
+    users: Users,
+    nickname: jsonMsg.nickname
+  };
+
+  return broadcastMsg;
+}
+
+function handlReceiveMsg(server: any, jsonMsg: any):void {
+  const getTime = new Date().getTime();
+  const msgType:number = jsonMsg.type;
+  let broadcastMsg:any = {};
+  switch(msgType) {
+    case 1:
+      broadcastMsg = handleType1Msg(jsonMsg);
+      break;
+    case 2:
+      broadcastMsg = handleType2Msg(jsonMsg);
+      break;
+    default:
+      console.log('out of options');
+  }
+
+  console.log('broadcastMsg: ', broadcastMsg);
+
+  handleBroadcastMsg(server, JSON.stringify(broadcastMsg));
+}
+
+function createWs(port: number):any {
+  return new WebSocketServer({ port: port });
+}
+
+function main(): void {
+  const port = 8001;
+  const wss = createWs(port);
+  wss.on('open', handleServerOpen);
+  wss.on('close', handleServerClose);
+  wss.on('connection', function connection(ws:any) {
+    ws.on('message', function message(data:any) {
+      const jsonMsg = JSON.parse(data);
+      console.log(jsonMsg);
+
+      handlReceiveMsg(wss, jsonMsg);
+    });
+  });
+}
+
+main();

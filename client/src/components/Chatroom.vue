@@ -7,7 +7,7 @@
     <Chat 
       v-for="chat in chatInfo"
       :chat="chat"
-      :key="history.id"
+      :key="chat.msgid"
     />
   </div>
 </template>
