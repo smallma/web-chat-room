@@ -1,17 +1,38 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-// import HelloWorld from './components/HelloWorld.vue'
-  import StartPopup from './components/StartPopup.vue'
-  import Chatroom from './components/Chatroom.vue'
-
-</script>
+<template>
+  <div>
+    <figure class="bg" />
+    <!-- <img class="framework-logo" alt="Vue logo" src="./assets/logo.png" /> -->
+    <transition>
+      <StartPopup 
+        v-if="step === 0"
+        @joinChatRoom="updateLoginInfo"
+      />
+    </transition>
+    
+    <transition>
+      <Chatroom 
+        v-show="step === 1"
+        :chatInfo="chatInfo" :userInfo="userInfo"
+        :websocketsend="websocketsend"
+      />
+    </transition>
+  </div>
+</template>
 
 <script lang="ts">
   // import Socket from "./utils/socket";
-  import { mapMutations } from "vuex";
+  import { mapMutations, mapState } from "vuex";
+  import { mixinWebsocket } from './utils/ws';
+
+  import StartPopup from '@comps/StartPopup.vue'
+  import Chatroom from '@comps/Chatroom.vue'
 
   export default {
+    mixins: [mixinWebsocket],
+    components: {
+      StartPopup,
+      Chatroom
+    },
     data() {
       return {
         chatInfo: [],
@@ -19,17 +40,26 @@
       }
     },
     created() {
-      const wsUrl = process.env.VUE_APP_WS_URL;
-      const socket = new WebSocket(wsUrl);
-      const that = this;
-      socket.onmessage = function(msg) {
-        console.log(msg);
-        that.handleGetMessage(msg.data);
-      };
+      this.initWebsocket()
+      // const wsUrl = process.env.VUE_APP_WS_URL;
+      // const socket = new WebSocket(wsUrl);
+      // const that = this;
+      // socket.onmessage = function(msg) {
+      //   console.log(msg);
+      //   that.handleGetMessage(msg.data);
+      // };
       // Socket.$on("message", this.handleGetMessage);
+
+      console.log('@@@@@$store: ', this.ws);
+    },
+    destroy(){
+      this.websocketclose();
     },
     beforeDestroy() {
       // Socket.$off("message", this.handleGetMessage);
+    },
+    mounted() {
+      console.log('$store: ', this.step);
     },
     methods: {
       ...mapMutations({
@@ -39,28 +69,33 @@
         this.setWsRes(JSON.parse(msg));
       },
       updateLoginInfo: function(info: any) {
-        console.log('updateLoginInfo', info);
+        console.log('updateLoginInfo: ', info);
         this.userInfo = info;
-        return;
+
+        const broadcastMsg = {
+          type: 1,
+          nickname: info.nickname,
+          selectAvatarId: info.selectAvatarId,
+          uuid: info.uuid
+        };
+
+        this.websocketsend(JSON.stringify(broadcastMsg));
+      }
+    },
+    computed: {
+      ...mapState('step', ['step']),
+    },
+    watch: {
+      step: function (newValue, oldValue) {
+        console.log('newValue, oldValue: ', newValue, oldValue);
       }
     }
   }
 
 </script>
 
-<template>
-  <div>
-    <img class="framework-logo" alt="Vue logo" src="./assets/logo.png" />
-    <StartPopup 
-      @joinChatRoom="updateLoginInfo"
-    />
 
-    <Chatroom :chatInfo="chatInfo" :userInfo="userInfo"/>
-  </div>
-</template>
-
-
-<style>
+<style lang="scss">
 .framework-logo {
   position: absolute;
   left: 13px;
@@ -71,6 +106,18 @@
 #app {
   position: relative;
   min-height: 100%;
+  overflow: hidden;
+
+  .bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vw;
+    background: url(https://images.unsplash.com/photo-1451186859696-371d9477be93?crop=entropy&fit=crop&fm=jpg&h=975&ixjsv=2.1.0&ixlib=rb-0.3.5&q=80&w=1925) no-repeat 0 0;
+    transform: scale(1.2);
+    filter: blur(80px);
+  }
 }
 
 html,
@@ -87,5 +134,29 @@ figure {
   margin-block-end: 0;
   margin-inline-start: 0;
   margin-inline-end: 0;
+}
+
+.v-leave {
+  opacity: 1;
+}
+
+.v-leave-active {
+  transition: opacity 0.5s;
+}
+
+.v-leave-to {
+  opacity: 0;
+}
+
+.v-enter {
+  opacity: 0;
+}
+
+.v-enter-active {
+  transition: opacity 0.5s;
+}
+
+.v-enter-to {
+  opacity: 1;
 }
 </style>

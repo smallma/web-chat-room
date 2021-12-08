@@ -1,15 +1,24 @@
 export const state = {
-  wsRes: {}
+  wsRes: []
 };
+
 export const actions = {};
 
 export const mutations = {
   setWsRes(state:any, payload:any) {
-    state.wsRes = payload;
-    console.log('payload: ', payload);
+    state.wsRes.push(payload);
+    console.log('setWsRes payload: ', payload);
   }
 };
-export const getters = {};
+
+export const getters = {
+  latestRecord: (state:any) => {
+    return state.wsRes[state.wsRes.length - 1];
+  },
+  users: (state:any) => {
+    return state.wsRes[state.wsRes.length - 1].users;
+  },
+};
 
 export default {
   state,

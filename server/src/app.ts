@@ -34,9 +34,11 @@ function handleType1Msg(jsonMsg: any):any {
   const broadcastMsg = {
     type: 1,
     msgid: getTime,
+    uuid: jsonMsg.uuid,
     date: getDate(),
     msg: jsonMsg.nickname + ' join chat room',
     users: Users,
+    selectAvatarId: jsonMsg.selectAvatarId,
     nickname: jsonMsg.nickname
   };
   
@@ -49,9 +51,11 @@ function handleType2Msg(jsonMsg: any):any {
   const broadcastMsg = {
     type: 2,
     msgid: getTime,
+    uuid: jsonMsg.uuid,
     date: getDate(),
     msg: jsonMsg.msg,
     users: Users,
+    selectAvatarId: jsonMsg.selectAvatarId,
     nickname: jsonMsg.nickname
   };
 

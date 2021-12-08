@@ -13,6 +13,8 @@
 
 import { createStore } from "vuex";
 import ws from "./ws";
+import step from "./step";
+import user from "./user";
 
 export default createStore({
   state() {
@@ -24,5 +26,5 @@ export default createStore({
   actions: {
     
   },
-  modules: { ws }
+  modules: { ws, step, user }
 });

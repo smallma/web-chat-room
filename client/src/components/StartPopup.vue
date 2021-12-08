@@ -1,7 +1,3 @@
-<script setup lang="ts">
-    import Avatar from './Avatar.vue'
-</script>
-
 <template>
   <div class="start_popup">
     <div class="start-hint">
@@ -34,7 +30,13 @@
 </template>
 
 <script lang="ts">
+  import { mapMutations } from "vuex";
+  import Avatar from './Avatar.vue'
+
   export default {
+    components: {
+      Avatar
+    },
     data() {
       return {
         avatarCount: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
@@ -43,7 +45,12 @@
         nickname: 'Nickname'
       };
     },
+    
     methods: {
+      ...mapMutations({
+        nextStep: "step/nextStep",
+        setUser: "user/setUser",
+      }),
       clickAvatar: function(event: any){
         const selectId = event.target.getAttribute('data-id');
         this.selectAvatarId = parseInt(selectId);
@@ -57,6 +64,8 @@
 
         console.log('joinInfo: ', joinInfo);
         this.$emit('joinChatRoom', joinInfo);
+        this.setUser(joinInfo);
+        this.nextStep();
       }
     }
   }
@@ -68,7 +77,7 @@
     top: 50%;
     left: 50%;
     width: 70vw;
-    background-color: rgba(255, 255, 255, 0.6);
+    // background-color: rgba(255, 255, 255, 0.6);
     transform: translate3d(-50%, -50%, 0);
 
     .start-hint {
@@ -83,7 +92,7 @@
       border-radius: 6px;
       background: #f7f7f7;
       transform: translateY(-50%);
-      box-shadow: 10px 6px 13px #999;
+      box-shadow: 10px 6px 13px #000;
 
       .hint-title {
         display: block;
@@ -108,7 +117,7 @@
       padding: 30px 0;
       width: 70%;
       text-align: center;
-      background: #474a59;
+      background: rgba(0, 0, 0, 0.5);
 
       .start-avatars {
         position: relative;
