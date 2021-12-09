@@ -5,12 +5,34 @@ const moment = require("moment");
 type userType = { nickname: string };
 let Users:userType[] = [];
 
+interface jsonMsg {
+  [propName: string]: any;
+}
+
+interface user {
+  nickname: string;
+}
+interface broadcastMsg {
+  type?: number;
+  msgid?: number;
+  uuid?: string;
+  date?: string;
+  msg?: string;
+  users?: Array<user>;
+  selectAvatarId?: number;
+  nickname?: string;
+}
+
 function getDate():string {
   return moment().format('HH:mm')
 }
 
 function handleServerOpen(event: any): void {
   console.log('connected');
+}
+
+function handleServerError(event: any): void {
+  console.log('error: ', event.message);
 }
 
 function handleServerClose(event: any): void {
@@ -25,13 +47,13 @@ function handleBroadcastMsg(server: any, msg: string):void {
   });
 }
 
-function handleType1Msg(jsonMsg: any):any {
+function handleType1Msg(jsonMsg: jsonMsg):any {
   const getTime = new Date().getTime();
   Users.push({
     nickname: jsonMsg.nickname,
   });
 
-  const broadcastMsg = {
+  const broadcastMsg:broadcastMsg = {
     type: 1,
     msgid: getTime,
     uuid: jsonMsg.uuid,
@@ -45,10 +67,10 @@ function handleType1Msg(jsonMsg: any):any {
   return broadcastMsg;
 }
 
-function handleType2Msg(jsonMsg: any):any {
+function handleType2Msg(jsonMsg: jsonMsg):any {
   const getTime = new Date().getTime();
 
-  const broadcastMsg = {
+  const broadcastMsg:broadcastMsg = {
     type: 2,
     msgid: getTime,
     uuid: jsonMsg.uuid,
@@ -62,10 +84,11 @@ function handleType2Msg(jsonMsg: any):any {
   return broadcastMsg;
 }
 
-function handlReceiveMsg(server: any, jsonMsg: any):void {
-  const getTime = new Date().getTime();
+
+function handlReceiveMsg(server: any, jsonMsg: jsonMsg):void {
+  const getTime:number = new Date().getTime();
   const msgType:number = jsonMsg.type;
-  let broadcastMsg:any = {};
+  let broadcastMsg:broadcastMsg = {};
   switch(msgType) {
     case 1:
       broadcastMsg = handleType1Msg(jsonMsg);
@@ -77,25 +100,29 @@ function handlReceiveMsg(server: any, jsonMsg: any):void {
       console.log('out of options');
   }
 
+  if (!broadcastMsg) { return; }
   console.log('broadcastMsg: ', broadcastMsg);
-
   handleBroadcastMsg(server, JSON.stringify(broadcastMsg));
 }
 
 function createWs(port: number):any {
-  return new WebSocketServer({ port: port });
+  const wss = new WebSocketServer({ port: port });
+  wss.on('error', function(event: any) {
+    console.log('Server error: ', event.message);
+    wss.close();
+  });
+  return wss;
 }
 
 function main(): void {
-  const port = 8001;
-  const wss = createWs(port);
+  const port:number = 8001;
+  const wss:any = createWs(port);
   wss.on('open', handleServerOpen);
   wss.on('close', handleServerClose);
   wss.on('connection', function connection(ws:any) {
     ws.on('message', function message(data:any) {
-      const jsonMsg = JSON.parse(data);
+      const jsonMsg:jsonMsg = JSON.parse(data);
       console.log(jsonMsg);
-
       handlReceiveMsg(wss, jsonMsg);
     });
   });
