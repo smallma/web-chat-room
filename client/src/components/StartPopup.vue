@@ -33,11 +33,18 @@
   import { mapMutations } from "vuex";
   import Avatar from './Avatar.vue'
 
+  declare interface startPopupData {
+    avatarCount: Array<number>;
+    selectAvatarId: number;
+    uuid: string;
+    nickname: string;
+  };
+
   export default {
     components: {
       Avatar
     },
-    data() {
+    data(): startPopupData {
       return {
         avatarCount: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
         selectAvatarId: 1,
@@ -51,12 +58,18 @@
         nextStep: "step/nextStep",
         setUser: "user/setUser",
       }),
-      clickAvatar: function(event: any){
-        const selectId = event.target.getAttribute('data-id');
+      clickAvatar: function(event: any) {
+        const selectId:string = event.target.getAttribute('data-id');
         this.selectAvatarId = parseInt(selectId);
       },
-      clickJoin: function(event: any){
-        const joinInfo = {
+      clickJoin: function(event: any) {
+        interface joinInfo {
+          nickname: string;
+          uuid: number;
+          selectAvatarId: number;
+        };
+
+        const joinInfo:joinInfo = {
           nickname: this.nickname,
           uuid: this.uuid,
           selectAvatarId: this.selectAvatarId

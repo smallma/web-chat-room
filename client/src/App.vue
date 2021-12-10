@@ -27,6 +27,12 @@
   import StartPopup from '@comps/StartPopup.vue'
   import Chatroom from '@comps/Chatroom.vue'
 
+  interface loginInfo {
+    nickname: string;
+    uuid: number;
+    selectAvatarId: number;
+  };
+
   export default {
     mixins: [mixinWebsocket],
     components: {
@@ -50,7 +56,7 @@
       // };
       // Socket.$on("message", this.handleGetMessage);
 
-      console.log('@@@@@$store: ', this.ws);
+      // console.log('@@@@@$store: ', this.ws);
     },
     destroy(){
       this.websocketclose();
@@ -59,24 +65,24 @@
       // Socket.$off("message", this.handleGetMessage);
     },
     mounted() {
-      console.log('$store: ', this.step);
+      // console.log('$store: ', this.step);
     },
     methods: {
       ...mapMutations({
         setWsRes: "ws/setWsRes",
       }),
-      handleGetMessage(msg) {
-        this.setWsRes(JSON.parse(msg));
-      },
-      updateLoginInfo: function(info: any) {
-        console.log('updateLoginInfo: ', info);
-        this.userInfo = info;
+      // handleGetMessage(msg) {
+      //   this.setWsRes(JSON.parse(msg));
+      // },
+      updateLoginInfo: function(loginInfo: loginInfo) {
+        console.log('updateLoginInfo: ', loginInfo);
+        this.userInfo = loginInfo;
 
         const broadcastMsg = {
           type: 1,
-          nickname: info.nickname,
-          selectAvatarId: info.selectAvatarId,
-          uuid: info.uuid
+          nickname: loginInfo.nickname,
+          selectAvatarId: loginInfo.selectAvatarId,
+          uuid: loginInfo.uuid
         };
 
         this.websocketsend(JSON.stringify(broadcastMsg));
@@ -86,7 +92,7 @@
       ...mapState('step', ['step']),
     },
     watch: {
-      step: function (newValue, oldValue) {
+      step: function (newValue: number, oldValue: number) {
         console.log('newValue, oldValue: ', newValue, oldValue);
       }
     }

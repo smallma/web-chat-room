@@ -26,6 +26,33 @@
   import { mapState } from "vuex";
   import { mixinWebsocket } from '@utils/ws';
 
+  declare interface chatroomData {
+    msg: string;
+  };
+
+  interface receiveMsgData {
+    type: number;
+    msgid: number;
+    uuid: string;
+    date: string;
+    msg: string;
+    users: Array<string>;
+    selectAvatarId: number;
+    nickname: string;
+  }
+
+  interface sendingMsg {
+    type: number;
+    msg: string;
+    nickname: string;
+    selectAvatarId: number;
+    uuid: string;
+  }
+
+  interface state {
+    wsRes: Array<receiveMsgData>;
+  }
+
   export default {
     mixins: [mixinWebsocket],
     components: {
@@ -41,7 +68,7 @@
         required: true
       }
     },
-    data() {
+    data(): chatroomData {
       return {
         msg: ''
       }
@@ -52,14 +79,10 @@
     },
     watch: {
       wsRes: {
-        handler: function(newValue, oldValue) {
+        handler: function(newValue:state, oldValue:state) {
           console.log('!!!!!!!newValue, oldValue: ', newValue, oldValue);
 
           this.$nextTick(function () {
-          //   this.scroll_bottom();
-          // });
-
-          // setTimeout(() => {
             const container = this.$el.querySelector(".chats-container");
             container.scrollTop = container.scrollHeight;
             this.$refs.inputText.focus();
@@ -73,17 +96,16 @@
       clickSend: function(event: any){
         if (!this.msg) { return; }
 
-        const sendingMsg = {
+        const sendingMsg:sendingMsg = {
           type: 2,
           msg: this.msg,
           nickname: this.user.nickname,
           selectAvatarId: this.user.selectAvatarId,
           uuid: this.user.uuid
         };
+
         this.websocketsend(JSON.stringify(sendingMsg));
         this.msg = ''; 
-
-        
       }
     }
   }

@@ -1,5 +1,19 @@
 import { mapMutations } from 'vuex';
 
+interface user {
+  nickname: string;
+}
+interface receiveMsgData {
+  type: number;
+  msgid: number;
+  uuid: string;
+  date: string;
+  msg: string;
+  users: Array<user>;
+  selectAvatarId: number;
+  nickname: string;
+}
+
 export const mixinWebsocket = {
   data(){
     return{
@@ -12,7 +26,7 @@ export const mixinWebsocket = {
     }),
 
     initWebsocket(){
-      let wsURL = process.env.VUE_APP_WS_URL;
+      let wsURL:string = process.env.VUE_APP_WS_URL;
       this.ws = new WebSocket(wsURL);
       this.ws.onopen = this.websocketonopen;
       this.ws.error = this.websocketonerror;
@@ -25,14 +39,14 @@ export const mixinWebsocket = {
     websocketonerror(e:any){
       console.error('ws connect failed, error: ', e);
     },
-    websocketonmessage(receiveMsg:string){
-      console.log('receiveMsg:' , receiveMsg.data)
-      const msg = JSON.parse(receiveMsg.data);
+    websocketonmessage(receiveMsg:any){
+      // console.log('receiveMsg:' , receiveMsg.data)
+      const msg:receiveMsgData = JSON.parse(receiveMsg.data);
       this.setWsRes(msg);
-      console.log('msg: ', msg);
+      // console.log('msg: ', msg);
     },
     websocketsend(msg:string){
-      console.log('send data: ', msg);
+      // console.log('send data: ', msg);
 
       this.ws.send(msg);
     },

@@ -39,7 +39,7 @@
       ...mapState('user', ['user']),
     },
     mounted() {
-      console.log('uuid: ', this.user.uuid);
+      // console.log('uuid: ', this.user.uuid);
     },
   }
 </script>

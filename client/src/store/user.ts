@@ -1,18 +1,28 @@
-export const state = {
+
+interface user {
+  nickname: string;
+  uuid: string;
+  selectAvatarId: number;
+}
+interface state {
+  user: user;
+}
+
+export const state:state = {
   user: {}
 };
+
 export const actions = {
- 
 };
 
 export const mutations = {
-  setUser(state:any, payload: any) {
+  setUser(state:any, payload:user) {
     state.user = payload;
     console.log('setUser: ', payload);
   }
 };
 export const getters = {
-  getUuid: (state:any) => {
+  getUuid: (state:state) => {
     return state.user.uuid;
   }
 };
