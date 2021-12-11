@@ -1,14 +1,18 @@
-// const WebSocket = require('ws');
 import { WebSocketServer, OPEN } from 'ws';
-const moment = require("moment");
+import { pipe } from 'fp-ts/function'
+import { number } from 'fp-ts';
+// const moment = require("moment");
 
 type userType = { nickname: string };
 let Users:userType[] = [];
 
 interface jsonMsg {
-  [propName: string]: any;
+  type: number;
+  nickname: string;
+  msg?: string;
+  selectAvatarId: number;
+  uuid: string;
 }
-
 interface user {
   nickname: string;
 }
@@ -24,7 +28,9 @@ interface broadcastMsg {
 }
 
 function getDate():string {
-  return moment().format('HH:mm')
+  // return moment().format('HH:mm')
+  const date = new Date();
+  return `${date.getHours()}:${date.getMinutes()}`;
 }
 
 function handleServerOpen(event: any): void {
@@ -41,13 +47,11 @@ function handleServerClose(event: any): void {
 
 function handleBroadcastMsg(server: any, msg: string):void {
   server.clients.forEach(function each(client: any) {
-    // if (client.readyState === OPEN) {
     client.send(msg);
-    // }
   });
 }
 
-function handleType1Msg(jsonMsg: jsonMsg):any {
+function handleType1Msg(jsonMsg: jsonMsg):broadcastMsg {
   const getTime = new Date().getTime();
   Users.push({
     nickname: jsonMsg.nickname,
@@ -67,7 +71,7 @@ function handleType1Msg(jsonMsg: jsonMsg):any {
   return broadcastMsg;
 }
 
-function handleType2Msg(jsonMsg: jsonMsg):any {
+function handleType2Msg(jsonMsg: jsonMsg):broadcastMsg {
   const getTime = new Date().getTime();
 
   const broadcastMsg:broadcastMsg = {
@@ -83,7 +87,6 @@ function handleType2Msg(jsonMsg: jsonMsg):any {
 
   return broadcastMsg;
 }
-
 
 function handlReceiveMsg(server: any, jsonMsg: jsonMsg):void {
   const getTime:number = new Date().getTime();
@@ -111,21 +114,52 @@ function createWs(port: number):any {
     console.log('Server error: ', event.message);
     wss.close();
   });
+
   return wss;
+}
+
+function handleWssOpen (wss:any):any {
+  wss.on('open', handleServerOpen);
+
+  return wss;
+}
+
+function handleWssClose (wss:any):any {
+  wss.on('close', handleServerClose);
+
+  return wss;
+}
+
+function handleWssConnection (wss:any):void {
+  wss.on('connection', function connection(ws:any) {
+    ws.on('message', function message(reveiveData:string) {
+      const jsonMsg:jsonMsg = JSON.parse(reveiveData);
+      console.log('jsonMsg: ', jsonMsg);
+      handlReceiveMsg(wss, jsonMsg);
+    });
+  }); 
 }
 
 function main(): void {
   const port:number = 8001;
-  const wss:any = createWs(port);
-  wss.on('open', handleServerOpen);
-  wss.on('close', handleServerClose);
-  wss.on('connection', function connection(ws:any) {
-    ws.on('message', function message(data:any) {
-      const jsonMsg:jsonMsg = JSON.parse(data);
-      console.log(jsonMsg);
-      handlReceiveMsg(wss, jsonMsg);
-    });
-  });
+
+  pipe(
+    createWs(port),
+    handleWssOpen,
+    handleWssClose,
+    handleWssConnection
+  );
+
+  // const wss:any = createWs(port);
+  // wss.on('open', handleServerOpen);
+  // wss.on('close', handleServerClose);
+  // wss.on('connection', function connection(ws:any) {
+  //   ws.on('message', function message(data:any) {
+  //     const jsonMsg:jsonMsg = JSON.parse(data);
+  //     console.log(jsonMsg);
+  //     handlReceiveMsg(wss, jsonMsg);
+  //   });
+  // });
 }
 
 main();
