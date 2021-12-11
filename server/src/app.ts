@@ -1,11 +1,13 @@
 import { WebSocketServer, OPEN } from 'ws';
 import { pipe } from 'fp-ts/function'
 import { number } from 'fp-ts';
-// const moment = require("moment");
+import { Either, tryCatch, isRight } from 'fp-ts/Either'
+import * as J from 'fp-ts/Json';
 
 type userType = { nickname: string };
 let Users:userType[] = [];
 
+interface emptyDict {};
 interface jsonMsg {
   type: number;
   nickname: string;
@@ -88,7 +90,8 @@ function handleType2Msg(jsonMsg: jsonMsg):broadcastMsg {
   return broadcastMsg;
 }
 
-function handlReceiveMsg(server: any, jsonMsg: jsonMsg):void {
+
+function handlReceiveMsg(jsonMsg: jsonMsg):any {
   const getTime:number = new Date().getTime();
   const msgType:number = jsonMsg.type;
   let broadcastMsg:broadcastMsg = {};
@@ -103,9 +106,10 @@ function handlReceiveMsg(server: any, jsonMsg: jsonMsg):void {
       console.log('out of options');
   }
 
-  if (!broadcastMsg) { return; }
-  console.log('broadcastMsg: ', broadcastMsg);
-  handleBroadcastMsg(server, JSON.stringify(broadcastMsg));
+  // if (!broadcastMsg) { return; }
+  return broadcastMsg;
+  // console.log('broadcastMsg: ', broadcastMsg);
+  // handleBroadcastMsg(server, JSON.stringify(broadcastMsg));
 }
 
 function createWs(port: number):any {
@@ -130,12 +134,29 @@ function handleWssClose (wss:any):any {
   return wss;
 }
 
+// const _validateStringParsing = (str: string): Either<Error, unknown> => 
+//   tryCatch<Error, unknown>(
+//     () => JSON.parse(str),
+//     (err) => (err instanceof Error ? err : Error('parsing Error'))
+//   );
+
 function handleWssConnection (wss:any):void {
   wss.on('connection', function connection(ws:any) {
     ws.on('message', function message(reveiveData:string) {
+      // const validatedData = _validateStringParsing(reveiveData);
+      // console.log('validatedData: ', validatedData);
+      console.log('validatedData2: ', J.parse(reveiveData));
+      if (!isRight(J.parse(reveiveData))) { return; }
+
+      // const jsonMsg:jsonMsg = transformMsg.right;
       const jsonMsg:jsonMsg = JSON.parse(reveiveData);
       console.log('jsonMsg: ', jsonMsg);
-      handlReceiveMsg(wss, jsonMsg);
+      const broadcastMsg:broadcastMsg | {} = handlReceiveMsg(jsonMsg);
+
+      if (broadcastMsg) {
+        console.log('broadcastMsg: ', broadcastMsg);
+        handleBroadcastMsg(wss, JSON.stringify(broadcastMsg));
+      }
     });
   }); 
 }
@@ -150,6 +171,8 @@ function main(): void {
     handleWssConnection
   );
 
+  // test();
+
   // const wss:any = createWs(port);
   // wss.on('open', handleServerOpen);
   // wss.on('close', handleServerClose);
@@ -163,3 +186,19 @@ function main(): void {
 }
 
 main();
+
+
+export { 
+  getDate,
+  handleServerOpen,
+  handleServerError,
+  handleServerClose,
+  handleBroadcastMsg,
+  handleType1Msg,
+  handleType2Msg,
+  handlReceiveMsg,
+  createWs,
+  handleWssOpen,
+  handleWssClose,
+  handleWssConnection
+};
