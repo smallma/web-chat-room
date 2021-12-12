@@ -10,7 +10,6 @@
     "express": "^4.17.1",
     "fp-ts": "^2.11.5",
     "moment": "^2.29.1",
-    "nyc": "^15.1.0",
     "typescript": "^4.5.2"
   },
   "devDependencies": {
@@ -21,14 +20,16 @@
     "chai": "^4.3.4",
     "mocha": "^9.1.3",
     "mocha-junit-reporter": "^2.0.2",
+    "mochawesome": "^7.0.1",
     "nodejs-websocket": "^1.7.2",
     "nodemon": "^2.0.15",
+    "nyc": "^15.1.0",
     "ts-node": "^10.4.0",
     "ws": "^8.3.0"
   },
   "scripts": {
-    "test": "env TS_NODE_PROJECT='tsconfig.testing.json' mocha --require ts-node/register 'tests/**/*.ts'",
-    "test2": "env TS_NODE_PROJECT='tsconfig.testing.json' mocha 'tests/**/*.ts' --recursive --reporter mocha-junit-reporter --timeout 60000 --exit",
+    "test": "env TS_NODE_PROJECT='tsconfig.testing.json' mocha --require ts-node/register 'tests/**/*.ts' --reporter mochawesome",
+    "coverage": "env TS_NODE_PROJECT='tsconfig.testing.json' nyc --reporter=html mocha --require ts-node/register 'tests/**/*.ts' --exit",
     "start": "nodemon src/app.ts",
     "build": "tsc --project ./"
   },

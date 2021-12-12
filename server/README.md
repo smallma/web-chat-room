@@ -3,6 +3,7 @@ Node.js, typescript, unit test
 
 # How to test
 npm test
+npm run coverage
 
 # How to start
 npm run start

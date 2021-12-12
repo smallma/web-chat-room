@@ -35,18 +35,6 @@ function getDate():string {
   return `${date.getHours()}:${date.getMinutes()}`;
 }
 
-function handleServerOpen(event: any): void {
-  console.log('connected');
-}
-
-function handleServerError(event: any): void {
-  console.log('error: ', event.message);
-}
-
-function handleServerClose(event: any): void {
-  console.log('disconnected');
-}
-
 function handleBroadcastMsg(server: any, msg: string):void {
   server.clients.forEach(function each(client: any) {
     client.send(msg);
@@ -90,7 +78,6 @@ function handleType2Msg(jsonMsg: jsonMsg):broadcastMsg {
   return broadcastMsg;
 }
 
-
 function handlReceiveMsg(jsonMsg: jsonMsg):any {
   const getTime:number = new Date().getTime();
   const msgType:number = jsonMsg.type;
@@ -106,10 +93,7 @@ function handlReceiveMsg(jsonMsg: jsonMsg):any {
       console.log('out of options');
   }
 
-  // if (!broadcastMsg) { return; }
   return broadcastMsg;
-  // console.log('broadcastMsg: ', broadcastMsg);
-  // handleBroadcastMsg(server, JSON.stringify(broadcastMsg));
 }
 
 function createWs(port: number):any {
@@ -123,13 +107,17 @@ function createWs(port: number):any {
 }
 
 function handleWssOpen (wss:any):any {
-  wss.on('open', handleServerOpen);
+  wss.on('open', (evt:any) => {
+    console.log('Server connected');
+  });
 
   return wss;
 }
 
 function handleWssClose (wss:any):any {
-  wss.on('close', handleServerClose);
+  wss.on('close', (evt:any) => {
+    console.log('Server disconnected');
+  });
 
   return wss;
 }
@@ -145,7 +133,7 @@ function handleWssConnection (wss:any):void {
     ws.on('message', function message(reveiveData:string) {
       // const validatedData = _validateStringParsing(reveiveData);
       // console.log('validatedData: ', validatedData);
-      console.log('validatedData2: ', J.parse(reveiveData));
+      // console.log('validatedData2: ', J.parse(reveiveData));
       if (!isRight(J.parse(reveiveData))) { return; }
 
       // const jsonMsg:jsonMsg = transformMsg.right;
@@ -170,29 +158,12 @@ function main(): void {
     handleWssClose,
     handleWssConnection
   );
-
-  // test();
-
-  // const wss:any = createWs(port);
-  // wss.on('open', handleServerOpen);
-  // wss.on('close', handleServerClose);
-  // wss.on('connection', function connection(ws:any) {
-  //   ws.on('message', function message(data:any) {
-  //     const jsonMsg:jsonMsg = JSON.parse(data);
-  //     console.log(jsonMsg);
-  //     handlReceiveMsg(wss, jsonMsg);
-  //   });
-  // });
 }
 
 main();
 
-
 export { 
   getDate,
-  handleServerOpen,
-  handleServerError,
-  handleServerClose,
   handleBroadcastMsg,
   handleType1Msg,
   handleType2Msg,
