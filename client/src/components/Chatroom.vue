@@ -6,12 +6,18 @@
           v-for="chat in wsRes"
           :chat="chat"
           :key="chat.msgid"
+          :user="user"
         />
       </div>
     </div>
     <div class="chatroom-send">
       <div class="send-text" v-on:keyup.enter="clickSend">
-        <input v-model="msg" placeholder="Let's chat!" ref="inputText">
+        <input 
+          type= "text"
+          v-model.trim="msg"
+          placeholder="Say Hello!"
+          ref="inputText"
+        >
       </div>
 
       <div class="send-btn" @click="clickSend" >

@@ -28,7 +28,7 @@
     "ws": "^8.3.0"
   },
   "scripts": {
-    "test": "env TS_NODE_PROJECT='tsconfig.testing.json' mocha --require ts-node/register 'tests/**/*.ts' --reporter mochawesome",
+    "test": "env TS_NODE_PROJECT='tsconfig.testing.json' mocha --require ts-node/register 'tests/**/*.ts' --reporter mochawesome --exit",
     "coverage": "env TS_NODE_PROJECT='tsconfig.testing.json' nyc --reporter=html mocha --require ts-node/register 'tests/**/*.ts' --exit",
     "start": "nodemon src/app.ts",
     "build": "tsc --project ./"

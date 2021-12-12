@@ -30,13 +30,17 @@
       chat: {
         type: Object,
         required: true
+      },
+      user: {
+        type: Object,
+        required: true
       }
     },
     methods: {
       
     },
     computed: {
-      ...mapState('user', ['user']),
+      // ...mapState('user', ['user']),
     },
     mounted() {
       // console.log('uuid: ', this.user.uuid);

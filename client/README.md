@@ -1,6 +1,9 @@
 # How To Start
 npm run dev
 
+# How to Test
+npm run test
+
 
 # Reference
 Chat UI: https://codepen.io/supah/pen/jqOBqp
@@ -16,3 +19,7 @@ Vue3 Setup: https://zhuanlan.zhihu.com/p/257110553
 Vuex Guide: https://jeremysu0131.github.io/Vue-js-Vuex-%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-8-actions-%E7%9A%84%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/
 
 Vue if-show: https://cythilya.github.io/2017/05/28/vue-transitions/
+
+Jest basic: https://ithelp.ithome.com.tw/articles/10232132
+
+Vue test unit: https://vue-test-utils.vuejs.org/zh/guides/#%E8%B5%B7%E6%AD%A5

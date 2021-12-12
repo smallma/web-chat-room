@@ -9,7 +9,11 @@ interface state {
 }
 
 export const state:state = {
-  user: {}
+  user: {
+    nickname: '',
+    uuid: '', 
+    selectAvatarId: 1
+  }
 };
 
 export const actions = {
