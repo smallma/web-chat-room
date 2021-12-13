@@ -2,7 +2,6 @@
   <div 
     class="chat"
     v-bind:class="{mine:user.uuid == chat.uuid, 'is-join':chat.type == 1}"
-
   >
     <div class="chat-avatar">
         <Avatar 

@@ -33,12 +33,7 @@
   import { mapMutations } from "vuex";
   import Avatar from './Avatar.vue'
 
-  declare interface startPopupData {
-    avatarCount: Array<number>;
-    selectAvatarId: number;
-    uuid: string;
-    nickname: string;
-  };
+  
 
   export default {
     components: {
@@ -52,12 +47,13 @@
         nickname: 'Nickname'
       };
     },
+
     
     methods: {
-      ...mapMutations({
-        nextStep: "step/nextStep",
-        setUser: "user/setUser",
-      }),
+      // ...mapMutations({
+      //   nextStep: "step/nextStep",
+      //   setUser: "user/setUser",
+      // }),
       clickAvatar: function(event: any) {
         const selectId:string = event.target.getAttribute('data-id');
         this.selectAvatarId = parseInt(selectId);
@@ -77,8 +73,8 @@
 
         console.log('joinInfo: ', joinInfo);
         this.$emit('joinChatRoom', joinInfo);
-        this.setUser(joinInfo);
-        this.nextStep();
+        // this.setUser(joinInfo);
+        // this.nextStep();
       }
     }
   }

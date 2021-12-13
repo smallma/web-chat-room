@@ -21,20 +21,16 @@
 
 <script lang="ts">
   // import Socket from "./utils/socket";
+  import { computed } from "vue";
   import { mapMutations, mapState } from "vuex";
   import { mixinWebsocket } from './utils/ws';
 
   import StartPopup from '@comps/StartPopup.vue'
   import Chatroom from '@comps/Chatroom.vue'
 
-  interface loginInfo {
-    nickname: string;
-    uuid: number;
-    selectAvatarId: number;
-  };
-
   export default {
     mixins: [mixinWebsocket],
+   
     components: {
       StartPopup,
       Chatroom
@@ -42,7 +38,10 @@
     data() {
       return {
         chatInfo: [],
-        userInfo: {}
+        userInfo: {},
+        injectWsRes: [],
+        injectUser: {},
+        injectStep: 0,
       }
     },
     created() {
@@ -65,12 +64,17 @@
       // Socket.$off("message", this.handleGetMessage);
     },
     mounted() {
-      // console.log('$store: ', this.step);
+     
     },
     methods: {
       ...mapMutations({
-        setWsRes: "ws/setWsRes",
+        nextStep: "step/nextStep",
+        setUser: "user/setUser",
       }),
+
+      // ...mapMutations({
+      //   setWsRes: "ws/setWsRes",
+      // }),
       // handleGetMessage(msg) {
       //   this.setWsRes(JSON.parse(msg));
       // },
@@ -86,16 +90,58 @@
         };
 
         this.websocketsend(JSON.stringify(broadcastMsg));
+        this.setUser(loginInfo);
+        this.nextStep();
       }
     },
     computed: {
       ...mapState('step', ['step']),
+      ...mapState('ws', ['wsRes']),
+      ...mapState('user', ['user']),
     },
     watch: {
       step: function (newValue: number, oldValue: number) {
-        console.log('newValue, oldValue: ', newValue, oldValue);
+        // console.log('newValue, oldValue: ', newValue, oldValue);
+      },
+      wsRes: {
+        handler: function(newValue:state, oldValue:state) {
+          // console.log('!!!!!!! wsRes - newValue, oldValue: ', newValue, oldValue, this.wsRes);
+          this.injectWsRes = [...this.wsRes];
+        },
+        deep: true,
+        immediate: true
+      },
+      user: {
+        handler: function(newValue:any, oldValue:any) {
+          // this.injectUser = {
+          //   uuid: this.user.uuid,
+          //   nickname: this.user.nickname,
+          //   selectAvatarId: this.user.selectAvatarId,
+          // };
+
+          this.injectUser = newValue;
+          console.log('!!!!!!! User - newValue, oldValue: ', newValue, oldValue, this.injectUser);
+        },
+        deep: true,
+        immediate: true
+      }
+    },
+    provide() {
+      return {
+        step: computed(()=> this.step),
+        injectWsRes: computed(()=> this.injectWsRes),
+        injectUser: computed(()=> this.injectUser),
       }
     }
+    // provide: function() {
+    //   return {
+        
+
+    //     step: this.step,
+    //     ws: this.wsRes,
+    //     user: this.user
+    //   }
+    // }
   }
 
 </script>
