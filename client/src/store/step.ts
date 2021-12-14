@@ -15,20 +15,20 @@ export const mutations = {
     state.step = state.step + 1;
     console.log('nextSt step: ', state.step);
   },
-  prevStep(state:state) {
-    state.step = state.step - 1;
-    console.log('prevSt step: ', state.step);
-  },
-  setStep: (state:state, payload: number) => {
-    state.step = payload;
-    console.log('setStep step: ', state.step);
-  }
+  // prevStep(state:state) {
+  //   state.step = state.step - 1;
+  //   console.log('prevSt step: ', state.step);
+  // },
+  // setStep: (state:state, payload: number) => {
+  //   state.step = payload;
+  //   console.log('setStep step: ', state.step);
+  // }
 };
 
 export const getters = {
-  getStep: (state:state) => {
-    return state.step;
-  }
+  // getStep: (state:state) => {
+  //   return state.step;
+  // }
 };
 
 export default {

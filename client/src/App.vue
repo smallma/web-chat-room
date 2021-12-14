@@ -12,7 +12,6 @@
     <transition>
       <Chatroom 
         v-show="step === 1"
-        :chatInfo="chatInfo" :userInfo="userInfo"
         :websocketsend="websocketsend"
       />
     </transition>

@@ -29,12 +29,12 @@ export const mutations = {
 };
 
 export const getters = {
-  latestRecord: (state:state) => {
-    return state.wsRes[state.wsRes.length - 1];
-  },
-  users: (state:state) => {
-    return state.wsRes[state.wsRes.length - 1].users;
-  },
+//   latestRecord: (state:state) => {
+//     return state.wsRes[state.wsRes.length - 1];
+//   },
+//   users: (state:state) => {
+//     return state.wsRes[state.wsRes.length - 1].users;
+//   },
 };
 
 export default {

@@ -20,7 +20,7 @@ module.exports = {
     '^.+\\.tsx?$': 'babel-jest',
   },
   collectCoverage: true,
-  collectCoverageFrom: ["**/*.{ts,vue}", "!**/node_modules/**", "!**/coverage/**", "!**/vite.config.ts"],
+  collectCoverageFrom: ["**/*.{ts,vue}", "!**/node_modules/**", "!**/coverage/**", "!**/vite.config.ts", "!**/env.d.ts"],
   // testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$',
   moduleFileExtensions: ['vue', 'js', 'json', 'jsx', 'ts', 'tsx', 'node']
 }

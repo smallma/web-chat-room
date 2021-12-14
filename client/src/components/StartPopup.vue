@@ -1,13 +1,13 @@
 <template>
   <div class="start_popup">
     <div class="start-hint">
-      <span class="hint-title">Web Chat Room</span>
+      <h1 class="hint-title">Web Chat Room</h1>
       <span class="hint-info">Welcome! Please choose a avatar and username.</span>
     </div>
 
     <div class="start-container">
       <div class="start-nickname">
-        <input v-model="nickname" placeholder="Nickname">
+        <input v-model="nickname" placeholder="Nickname" data-test="msg">
       </div>
 
       <div class="start-avatars">
@@ -21,7 +21,7 @@
         />
       </div>
 
-      <div class="start-join" @click="clickJoin">
+      <div class="start-join" @click="clickJoin" data-test="button">
         <span>Join</span>
       </div>
     </div>
@@ -33,13 +33,11 @@
   import { mapMutations } from "vuex";
   import Avatar from './Avatar.vue'
 
-  
-
   export default {
     components: {
       Avatar
     },
-    data(): startPopupData {
+    data() {
       return {
         avatarCount: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
         selectAvatarId: 1,
@@ -47,8 +45,6 @@
         nickname: 'Nickname'
       };
     },
-
-    
     methods: {
       // ...mapMutations({
       //   nextStep: "step/nextStep",
@@ -59,13 +55,7 @@
         this.selectAvatarId = parseInt(selectId);
       },
       clickJoin: function(event: any) {
-        interface joinInfo {
-          nickname: string;
-          uuid: number;
-          selectAvatarId: number;
-        };
-
-        const joinInfo:joinInfo = {
+        const joinInfo = {
           nickname: this.nickname,
           uuid: this.uuid,
           selectAvatarId: this.selectAvatarId
@@ -108,6 +98,11 @@
         position: relative;
         color: #000;
         font-size: 37px;
+        font-weight: 400;
+        margin-block-start: 0;
+        margin-block-end: 0;
+        margin-inline-start: 0;
+        margin-inline-end: 0;
       }
 
       .hint-info {

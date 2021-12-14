@@ -44,6 +44,7 @@ declare interface startPopupData {
   nickname: string;
 };
 
+
 const app = createApp(App);
 app.use(store);
 app.mount("#app");

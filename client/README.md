@@ -23,3 +23,7 @@ Vue if-show: https://cythilya.github.io/2017/05/28/vue-transitions/
 Jest basic: https://ithelp.ithome.com.tw/articles/10232132
 
 Vue test unit: https://vue-test-utils.vuejs.org/zh/guides/#%E8%B5%B7%E6%AD%A5
+
+Provide test: https://stackoverflow.com/questions/53587362/how-to-unit-test-a-vue-component-that-have-provide-inject
+
+test-unit: https://vue-test-utils.vuejs.org/api/options.html#parentcomponent

@@ -26,9 +26,9 @@ export const mutations = {
   }
 };
 export const getters = {
-  getUuid: (state:state) => {
-    return state.user.uuid;
-  }
+  // getUuid: (state:state) => {
+  //   return state.user.uuid;
+  // }
 };
 
 export default {

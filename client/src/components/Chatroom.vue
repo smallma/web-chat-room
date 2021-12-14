@@ -17,10 +17,11 @@
           v-model.trim="msg"
           placeholder="Say Hello!"
           ref="inputText"
+          data-test="msg"
         >
       </div>
 
-      <div class="send-btn" @click="clickSend" >
+      <div class="send-btn" @click="clickSend" data-test="button">
         <span class="btn-text">Send</span>
       </div>
     </div>
@@ -31,7 +32,7 @@
   import { inject } from "vue";
   import Chat from './Chat.vue'
   // import { mapState } from "vuex";
-  import { mixinWebsocket } from '@utils/ws';
+  // import { mixinWebsocket } from '@utils/ws';
 
   // declare interface chatroomData {
   //   msg: string;
@@ -61,18 +62,14 @@
   // }
 
   export default {
-    mixins: [mixinWebsocket],
+    // mixins: [mixinWebsocket],
     inject: ['injectWsRes', 'injectUser'],
     components: {
       Chat
     },
     props: {
-      chatInfo: {
-        type: Object,
-        required: true
-      },
       websocketsend: {
-        type: Object,
+        type: Function,
         required: true
       }
     },
