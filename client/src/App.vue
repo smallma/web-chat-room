@@ -4,14 +4,14 @@
     <!-- <img class="framework-logo" alt="Vue logo" src="./assets/logo.png" /> -->
     <transition>
       <StartPopup 
-        v-if="step === 0"
+        v-if="injectStep === 0"
         @joinChatRoom="updateLoginInfo"
       />
     </transition>
     
     <transition>
       <Chatroom 
-        v-show="step === 1"
+        v-show="injectStep === 1"
         :websocketsend="websocketsend"
       />
     </transition>
@@ -21,7 +21,7 @@
 <script lang="ts">
   // import Socket from "./utils/socket";
   import { computed } from "vue";
-  import { mapMutations, mapState } from "vuex";
+  import { mapState } from "vuex";
   import { mixinWebsocket } from './utils/ws';
 
   import StartPopup from '@comps/StartPopup.vue'
@@ -29,7 +29,6 @@
 
   export default {
     mixins: [mixinWebsocket],
-   
     components: {
       StartPopup,
       Chatroom
@@ -45,38 +44,11 @@
     },
     created() {
       this.initWebsocket()
-      // const wsUrl = process.env.VUE_APP_WS_URL;
-      // const socket = new WebSocket(wsUrl);
-      // const that = this;
-      // socket.onmessage = function(msg) {
-      //   console.log(msg);
-      //   that.handleGetMessage(msg.data);
-      // };
-      // Socket.$on("message", this.handleGetMessage);
-
-      // console.log('@@@@@$store: ', this.ws);
     },
     destroy(){
       this.websocketclose();
     },
-    beforeDestroy() {
-      // Socket.$off("message", this.handleGetMessage);
-    },
-    mounted() {
-     
-    },
     methods: {
-      ...mapMutations({
-        nextStep: "step/nextStep",
-        setUser: "user/setUser",
-      }),
-
-      // ...mapMutations({
-      //   setWsRes: "ws/setWsRes",
-      // }),
-      // handleGetMessage(msg) {
-      //   this.setWsRes(JSON.parse(msg));
-      // },
       updateLoginInfo: function(loginInfo: loginInfo) {
         console.log('updateLoginInfo: ', loginInfo);
         this.userInfo = loginInfo;
@@ -89,60 +61,30 @@
         };
 
         this.websocketsend(JSON.stringify(broadcastMsg));
-        this.setUser(loginInfo);
-        this.nextStep();
+        this.injectUser = loginInfo;
+        this.injectStep = 1;
       }
     },
     computed: {
-      ...mapState('step', ['step']),
       ...mapState('ws', ['wsRes']),
-      ...mapState('user', ['user']),
     },
     watch: {
-      step: function (newValue: number, oldValue: number) {
-        // console.log('newValue, oldValue: ', newValue, oldValue);
-      },
       wsRes: {
         handler: function(newValue:state, oldValue:state) {
-          // console.log('!!!!!!! wsRes - newValue, oldValue: ', newValue, oldValue, this.wsRes);
           this.injectWsRes = [...this.wsRes];
         },
         deep: true,
         immediate: true
       },
-      user: {
-        handler: function(newValue:any, oldValue:any) {
-          // this.injectUser = {
-          //   uuid: this.user.uuid,
-          //   nickname: this.user.nickname,
-          //   selectAvatarId: this.user.selectAvatarId,
-          // };
-
-          this.injectUser = newValue;
-          console.log('!!!!!!! User - newValue, oldValue: ', newValue, oldValue, this.injectUser);
-        },
-        deep: true,
-        immediate: true
-      }
     },
     provide() {
       return {
-        step: computed(()=> this.step),
+        injectStep: computed(()=> this.injectStep),
         injectWsRes: computed(()=> this.injectWsRes),
         injectUser: computed(()=> this.injectUser),
       }
     }
-    // provide: function() {
-    //   return {
-        
-
-    //     step: this.step,
-    //     ws: this.wsRes,
-    //     user: this.user
-    //   }
-    // }
   }
-
 </script>
 
 

@@ -38,12 +38,6 @@
     methods: {
       
     },
-    computed: {
-      // ...mapState('user', ['user']),
-    },
-    mounted() {
-      // console.log('uuid: ', this.user.uuid);
-    },
   }
 </script>
 

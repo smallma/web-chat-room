@@ -31,38 +31,8 @@
 <script lang="ts">
   import { inject } from "vue";
   import Chat from './Chat.vue'
-  // import { mapState } from "vuex";
-  // import { mixinWebsocket } from '@utils/ws';
-
-  // declare interface chatroomData {
-  //   msg: string;
-  // };
-
-  // interface receiveMsgData {
-  //   type: number;
-  //   msgid: number;
-  //   uuid: string;
-  //   date: string;
-  //   msg: string;
-  //   users: Array<string>;
-  //   selectAvatarId: number;
-  //   nickname: string;
-  // }
-
-  // interface sendingMsg {
-  //   type: number;
-  //   msg: string;
-  //   nickname: string;
-  //   selectAvatarId: number;
-  //   uuid: string;
-  // }
-
-  // interface state {
-  //   wsRes: Array<receiveMsgData>;
-  // }
 
   export default {
-    // mixins: [mixinWebsocket],
     inject: ['injectWsRes', 'injectUser'],
     components: {
       Chat
@@ -73,7 +43,7 @@
         required: true
       }
     },
-    data(): chatroomData {
+    data() {
       return {
         msg: '',
         transWsRes: [],
@@ -83,30 +53,11 @@
     mounted() {
       console.log('$wsRes: ', this.injectWsRes);
     },
-    // computed: {
-    //   ...mapState('ws', ['wsRes']),
-    //   ...mapState('user', ['user']),
-    // },
     watch: {
-      // wsRes: {
-      //   handler: function(newValue:state, oldValue:state) {
-      //     console.log('!!!!!!! wsRes - newValue, oldValue: ', newValue, oldValue);
-
-      //     this.$nextTick(function () {
-      //       const container = this.$el.querySelector(".chats-container");
-      //       container.scrollTop = container.scrollHeight;
-      //       this.$refs.inputText.focus();
-      //     });
-      //   },
-      //   deep: true,
-      //   immediate: true
-      // }
       injectWsRes: {
         handler: function (new_value, old_value) {
-          // console.log('new client: ', new_value);
-
           this.transWsRes = JSON.parse(JSON.stringify(new_value.value));
-          // console.log('new injectWsRes transWsRes: ', this.transWsRes);
+
           this.$nextTick(function () {
             const container = this.$el.querySelector(".chats-container");
             container.scrollTop = container.scrollHeight;
@@ -118,36 +69,9 @@
       injectUser: {
         handler: function (new_value, old_value) {
           this.transUser = JSON.parse(JSON.stringify(this.injectUser.value));
-          // console.log('new injectUser this.injectUser: ', this.injectUser);
-          // console.log('new injectUser this.transUser: ', _transUser.nickname);
-          // console.log('new injectUser new_value: ', new_value);
-
-          // this.transUser = {
-          //   uuid: _transUser.uuid,
-          //   selectAvatarId: _transUser.selectAvatarId,
-          //   nickname: _transUser.nickname,
-          // }
-
-          console.log('this.transUser: ', this.transUser);
         },
         deep: true
       },
-
-      // ws: {
-      //   handler: function(newValue:any, oldValue:any) {
-      //     console.log('!!!!!!! chatroom wsRes - newValue, oldValue: ', newValue, oldValue);
-      //     console.log('!!!!!!! chatroom wsRes - target: ', this.ws);
-
-      //     this.$nextTick(function () {
-      //       const container = this.$el.querySelector(".chats-container");
-      //       container.scrollTop = container.scrollHeight;
-      //       this.$refs.inputText.focus();
-      //     });
-      //   },
-      //   deep: true,
-      //   immediate: true
-      // }
-      
     },
     methods: {
       clickSend: function(event: any){

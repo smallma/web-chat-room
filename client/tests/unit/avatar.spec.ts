@@ -29,16 +29,3 @@ describe('Avartar.vue', () => {
     expect(wrapper.classes()).toContain('avatar-2')
   })
 })
-
-
-// import { mapGetters } from "vuex"
-
-// export default {
-//   name: "ComponentWithGetters",
-
-//   computed: {
-//     ...mapGetters([
-//       'fullname'
-//     ])
-//   }
-// }

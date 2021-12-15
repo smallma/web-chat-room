@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/23</span>
+                <span class='fraction'>0/21</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/23</span>
+                <span class='fraction'>0/21</span>
             </div>
         
             
@@ -312,7 +312,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -355,7 +354,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -367,23 +365,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -397,7 +384,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -495,14 +495,14 @@
     &lt;!-- &lt;img class="framework-logo" alt="Vue logo" src="./assets/logo.png" /&gt; --&gt;
     &lt;transition&gt;
       &lt;StartPopup 
-        v-if="step === 0"
+        v-if="injectStep === 0"
         @joinChatRoom="updateLoginInfo"
       /&gt;
     &lt;/transition&gt;
     
     &lt;transition&gt;
       &lt;Chatroom 
-        v-show="step === 1"
+        v-show="injectStep === 1"
         :websocketsend="websocketsend"
       /&gt;
     &lt;/transition&gt;
@@ -520,7 +520,6 @@
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  export default {</span>
     mixins: [mixinWebsocket],
-   
     components: {
       StartPopup,
       Chatroom
@@ -554,12 +553,11 @@
       // Socket.$off("message", this.handleGetMessage);
     },
     mounted<span class="fstat-no" title="function not covered" >() {</span>
-     
     },
     methods: {
       ...mapMutations({
-        nextStep: "step/nextStep",
-        setUser: "user/setUser",
+        // nextStep: "step/nextStep",
+        // setUser: "user/setUser",
       }),
 &nbsp;
       // ...mapMutations({
@@ -580,19 +578,21 @@
         };
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        this.w</span>ebsocketsend(JSON.stringify(broadcastMsg));
-<span class="cstat-no" title="statement not covered" >        this.s</span>etUser(loginInfo);
-<span class="cstat-no" title="statement not covered" >        this.n</span>extStep();
+        // this.setUser(loginInfo);
+        // this.nextStep();
+<span class="cstat-no" title="statement not covered" >        this.i</span>njectUser = loginInfo;
+<span class="cstat-no" title="statement not covered" >        this.i</span>njectStep = 1;
       }
     },
     computed: {
-      ...mapState('step', ['step']),
+      // ...mapState('step', ['step']),
       ...mapState('ws', ['wsRes']),
-      ...mapState('user', ['user']),
+      // ...mapState('user', ['user']),
     },
     watch: {
-      step: <span class="fstat-no" title="function not covered" >function (n</span>ewValue: number, oldValue: number) {
-        // console.log('newValue, oldValue: ', newValue, oldValue);
-      },
+      // step: function (newValue: number, oldValue: number) {
+      //   // console.log('newValue, oldValue: ', newValue, oldValue);
+      // },
       wsRes: {
         handler: <span class="fstat-no" title="function not covered" >function(n</span>ewValue:state, oldValue:state) {
           // console.log('!!!!!!! wsRes - newValue, oldValue: ', newValue, oldValue, this.wsRes);
@@ -601,24 +601,24 @@
         deep: true,
         immediate: true
       },
-      user: {
-        handler: <span class="fstat-no" title="function not covered" >function(n</span>ewValue:any, oldValue:any) {
-          // this.injectUser = {
-          //   uuid: this.user.uuid,
-          //   nickname: this.user.nickname,
-          //   selectAvatarId: this.user.selectAvatarId,
-          // };
+      // user: {
+      //   handler: function(newValue:any, oldValue:any) {
+      //     // this.injectUser = {
+      //     //   uuid: this.user.uuid,
+      //     //   nickname: this.user.nickname,
+      //     //   selectAvatarId: this.user.selectAvatarId,
+      //     // };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >          this.i</span>njectUser = newValue;
-<span class="cstat-no" title="statement not covered" >          console.</span>log('!!!!!!! User - newValue, oldValue: ', newValue, oldValue, this.injectUser);
-        },
-        deep: true,
-        immediate: true
-      }
+      //     this.injectUser = newValue;
+      //     console.log('!!!!!!! User - newValue, oldValue: ', newValue, oldValue, this.injectUser);
+      //   },
+      //   deep: true,
+      //   immediate: true
+      // }
     },
 <span class="cstat-no" title="statement not covered" >    provide<span class="fstat-no" title="function not covered" >(</span>) {</span>
 <span class="cstat-no" title="statement not covered" >      return {</span>
-        step: computed(<span class="fstat-no" title="function not covered" >()=&gt; <span class="cstat-no" title="statement not covered" >t</span>his.</span>step),
+        injectStep: computed(<span class="fstat-no" title="function not covered" >()=&gt; <span class="cstat-no" title="statement not covered" >t</span>his.</span>injectStep),
         injectWsRes: computed(<span class="fstat-no" title="function not covered" >()=&gt; <span class="cstat-no" title="statement not covered" >t</span>his.</span>injectWsRes),
         injectUser: computed(<span class="fstat-no" title="function not covered" >()=&gt; <span class="cstat-no" title="statement not covered" >t</span>his.</span>injectUser),
       }
@@ -709,7 +709,7 @@ figure {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Tue Dec 14 2021 23:47:32 GMT+0800 (Taipei Standard Time)
+                at Wed Dec 15 2021 22:16:34 GMT+0800 (Taipei Standard Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

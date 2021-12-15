@@ -26,7 +26,7 @@ export const mixinWebsocket = {
     }),
 
     initWebsocket(){
-      let wsURL:string = process.env.VUE_APP_WS_URL;
+      let wsURL:string = process.env.VUE_APP_WS_URL || 'ws://localhost:8001';
       this.ws = new WebSocket(wsURL);
       this.ws.onopen = this.websocketonopen;
       this.ws.error = this.websocketonerror;

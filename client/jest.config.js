@@ -19,8 +19,9 @@ module.exports = {
     '^.+\\.ts$': 'ts-jest',
     '^.+\\.tsx?$': 'babel-jest',
   },
-  collectCoverage: true,
-  collectCoverageFrom: ["**/*.{ts,vue}", "!**/node_modules/**", "!**/coverage/**", "!**/vite.config.ts", "!**/env.d.ts"],
+  // collectCoverage: true,
+  // collectCoverageFrom: ["**/*.{ts,vue}", "!**/node_modules/**", "!**/coverage/**", "!**/vite.config.ts", "!**/env.d.ts"],
   // testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts)$',
-  moduleFileExtensions: ['vue', 'js', 'json', 'jsx', 'ts', 'tsx', 'node']
+  moduleFileExtensions: ['vue', 'js', 'json', 'jsx', 'ts', 'tsx', 'node'],
 }
+// process.env = Object.assign(process.env, { VUE_APP_WS_URL: 'ws://localhost:8001' });
