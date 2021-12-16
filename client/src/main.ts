@@ -8,6 +8,17 @@ declare interface chatroomData {
   msg: string;
 };
 
+// interface receiveMsgData {
+//   type: number;
+//   msgid: number;
+//   uuid: string;
+//   date: string;
+//   msg: string;
+//   users: Array<user>;
+//   selectAvatarId: number;
+//   nickname: string;
+// }
+
 declare interface receiveMsgData {
   type: number;
   msgid: number;
@@ -46,5 +57,6 @@ declare interface startPopupData {
 
 
 const app = createApp(App);
+app.config.unwrapInjectedRef = true;
 app.use(store);
 app.mount("#app");

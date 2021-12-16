@@ -33,15 +33,9 @@
   import Chat from './Chat.vue'
 
   export default {
-    inject: ['injectWsRes', 'injectUser'],
+    inject: ['injectWsRes', 'injectUser', 'mixinWebsocket'],
     components: {
       Chat
-    },
-    props: {
-      websocketsend: {
-        type: Function,
-        required: true
-      }
     },
     data() {
       return {
@@ -50,13 +44,13 @@
         transUser: {},
       }
     },
-    mounted() {
-      console.log('$wsRes: ', this.injectWsRes);
-    },
+    // mounted() {
+    //   console.log('$wsRes: ', this.injectWsRes);
+    // },
     watch: {
       injectWsRes: {
         handler: function (new_value, old_value) {
-          this.transWsRes = JSON.parse(JSON.stringify(new_value.value));
+          this.transWsRes = JSON.parse(JSON.stringify(new_value));
 
           this.$nextTick(function () {
             const container = this.$el.querySelector(".chats-container");
@@ -68,7 +62,7 @@
       },
       injectUser: {
         handler: function (new_value, old_value) {
-          this.transUser = JSON.parse(JSON.stringify(this.injectUser.value));
+          this.transUser = JSON.parse(JSON.stringify(this.injectUser));
         },
         deep: true
       },
@@ -85,7 +79,7 @@
           uuid: this.transUser.uuid
         };
 
-        this.websocketsend(JSON.stringify(sendingMsg));
+        this.mixinWebsocket.websocketsend(JSON.stringify(sendingMsg));
         this.msg = ''; 
       }
     }

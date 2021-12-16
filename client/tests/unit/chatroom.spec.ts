@@ -9,17 +9,24 @@ describe('Chatroom.vue', () => {
     let sendMsg;
     const wrapper = shallowMount(Chatroom, {
       // components: { Chat },
-      props: {
-        websocketsend: (msg:string) => {
-          sendMsg = msg;
-        }
-      },
+      // props: {
+      //   websocketsend: (msg:string) => {
+      //     sendMsg = msg;
+      //   }
+      // },
       global: {
         provide: {
           injectWsRes: [
           ],
           injectUser: {
             uuid: '5566'
+          },
+          mixinWebsocket: {
+            initWebsocket: function () {},
+            websocketsend: function (msg:string) {
+              sendMsg = msg;
+            },
+            websocketclose: function () {},
           }
         }
       }

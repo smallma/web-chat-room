@@ -1,15 +1,16 @@
-import { mapMutations } from 'vuex';
+// import { getCurrentInstance } from 'vue'
 
-interface user {
-  nickname: string;
-}
+import { mapMutations } from 'vuex';
+// interface user {
+//   nickname: string;
+// }
 interface receiveMsgData {
   type: number;
   msgid: number;
   uuid: string;
   date: string;
   msg: string;
-  users: Array<user>;
+  users: Array<string>;
   selectAvatarId: number;
   nickname: string;
 }
@@ -17,9 +18,14 @@ interface receiveMsgData {
 export const mixinWebsocket = {
   data(){
     return{
-      ws: null,
+      ws: {}
     }
   },
+
+  // data: () => ({
+  //   ws: {}
+  // }),
+
   methods:{
     ...mapMutations({
       setWsRes: "ws/setWsRes",
@@ -27,11 +33,17 @@ export const mixinWebsocket = {
 
     initWebsocket(){
       let wsURL:string = process.env.VUE_APP_WS_URL || 'ws://localhost:8001';
-      this.ws = new WebSocket(wsURL);
-      this.ws.onopen = this.websocketonopen;
-      this.ws.error = this.websocketonerror;
-      this.ws.onmessage = this.websocketonmessage;
-      this.ws.onclose = this.websocketclose;
+      const wsContainer = new WebSocket(wsURL);
+      wsContainer.onopen = this.websocketonopen;
+      wsContainer.onerror = this.websocketonerror;
+      wsContainer.onmessage = this.websocketonmessage;
+      wsContainer.onclose = this.websocketclose;
+
+      // console.log(this.ws, wsContainer);
+      this.ws = wsContainer;
+      // Vue.prototype.$ws = ws;
+      // const app = getCurrentInstance()
+      // app.appContext.config.globalProperties.$ws = ws
     },
     websocketonopen(){
       console.log('ws connecting');
@@ -48,7 +60,10 @@ export const mixinWebsocket = {
     websocketsend(msg:string){
       // console.log('send data: ', msg);
 
-      this.ws.send(msg);
+      this.wsContainer.send(msg);
+      // Vue.prototype.$ws.send(msg);
+      // const app = getCurrentInstance()
+      // app.appContext.config.globalProperties.$ws.send(msg);
     },
     websocketclose(){
       console.log('ws close connection')

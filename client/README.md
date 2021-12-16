@@ -26,4 +26,8 @@ Vue test unit: https://vue-test-utils.vuejs.org/zh/guides/#%E8%B5%B7%E6%AD%A5
 
 Provide test: https://stackoverflow.com/questions/53587362/how-to-unit-test-a-vue-component-that-have-provide-inject
 
-test-unit: https://vue-test-utils.vuejs.org/api/options.html#parentcomponent
+test-unit: https://vue-test-utils.vuejs.org/api/options.html#parentcomponent0
+
+test-unit env: https://github.com/vuejs/vue-test-utils/issues/193
+
+test-unit mixins: https://github.com/deepjyoti30/ytmdl-web-v2/blob/master/tests/__tests__/mixins.settings.test.js

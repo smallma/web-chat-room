@@ -12,29 +12,45 @@
     <transition>
       <Chatroom 
         v-show="injectStep === 1"
-        :websocketsend="websocketsend"
       />
     </transition>
   </div>
 </template>
 
 <script lang="ts">
+  interface receiveMsgData {
+    type: number;
+    msgid: number;
+    uuid: string;
+    date: string;
+    msg: string;
+    users: Array<string>;
+    selectAvatarId: number;
+    nickname: string;
+  }
+
+  interface state {
+    wsRes: Array<receiveMsgData>;
+  }
+
   // import Socket from "./utils/socket";
   import { computed } from "vue";
-  import { mapState } from "vuex";
-  import { mixinWebsocket } from './utils/ws';
+  import { mapState, mapMutations } from "vuex";
+  import mixinWebsocket from './utils/ws.compotition';
+  // import { mixinWebsocket } from './utils/ws';
 
-  import StartPopup from '@comps/StartPopup.vue'
-  import Chatroom from '@comps/Chatroom.vue'
+  import StartPopup from './components/StartPopup.vue'
+  import Chatroom from './components/Chatroom.vue'
 
   export default {
-    mixins: [mixinWebsocket],
+    // mixins: [mixinWebsocket],
     components: {
       StartPopup,
       Chatroom
     },
     data() {
       return {
+        wsRes: [],
         chatInfo: [],
         userInfo: {},
         injectWsRes: [],
@@ -43,12 +59,20 @@
       }
     },
     created() {
-      this.initWebsocket()
+      console.log('mixinWebsocket: ', mixinWebsocket);
+      // this.initWebsocket((msg) => {
+      mixinWebsocket.initWebsocket((msg) => {
+        this.setWsRes(msg)
+      })
     },
     destroy(){
-      this.websocketclose();
+      // this.websocketclose();
+      mixinWebsocket.websocketclose();
     },
     methods: {
+      // ...mapMutations({
+      //   setWsRes: "ws/setWsRes",
+      // }),
       updateLoginInfo: function(loginInfo: loginInfo) {
         console.log('updateLoginInfo: ', loginInfo);
         this.userInfo = loginInfo;
@@ -60,13 +84,18 @@
           uuid: loginInfo.uuid
         };
 
-        this.websocketsend(JSON.stringify(broadcastMsg));
+        mixinWebsocket.websocketsend(JSON.stringify(broadcastMsg));
         this.injectUser = loginInfo;
         this.injectStep = 1;
+      },
+      setWsRes: function(payload:any) {
+        console.log('payload: ', payload);
+        this.wsRes.push(payload);
       }
     },
     computed: {
-      ...mapState('ws', ['wsRes']),
+      // ...mapState('ws', ['wsRes']),
+      
     },
     watch: {
       wsRes: {
@@ -82,6 +111,7 @@
         injectStep: computed(()=> this.injectStep),
         injectWsRes: computed(()=> this.injectWsRes),
         injectUser: computed(()=> this.injectUser),
+        mixinWebsocket: mixinWebsocket,
       }
     }
   }

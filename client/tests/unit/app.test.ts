@@ -1,22 +1,23 @@
 import { mount, shallowMount } from '@vue/test-utils';
 import App from "../../src/App.vue";
-import Vue from 'vue';
-import Vuex from 'vuex';
-import { mixinWebsocket } from '../../src/utils/ws.fake';
+// import Vue from 'vue';
 
 
 describe('Chatroom.vue', () => {
-  test('Test send msg function', async () => {
+  it('my test', async () => {
     // process.env.VUE_APP_WS_URL = 'ws://localhost:8001';
-    
+    process.env.VUE_APP_WS_URL = 'ws://localhost:8001';
+
     const wrapper = mount(App, {
-      global: {
-        mixins: [mixinWebsocket],
-      },
 
     })
 
-    jest.spyOn(wrapper.vm, 'initWebsocket').mockImplementation(function () {})
+    
+
+    // jest.spyOn(wrapper.vm, 'initWebsocket').mockImplementation(function () {})
+    // jest.spyOn(wrapper.vm, 'initWebsocket').mockImplementation(() => function() {})
+    // jest.spyOn(wrapper.vm, 'ws').mockImplementation(() => function() {})
+    // jest.spyOn(wrapper.vm, 'initWebsocket', 'empty');
 
     // Next, load the module – do it dynamically, not at the top of the file!
     // const functionToTest = (await import('./mymodule')).functionToTest;
