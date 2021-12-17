@@ -1,6 +1,5 @@
 import { mount, shallowMount } from '@vue/test-utils';
 import App from "../../src/App.vue";
-// import Vue from 'vue';
 
 
 describe('Chatroom.vue', () => {

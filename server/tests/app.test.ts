@@ -1,13 +1,14 @@
 import { expect } from 'chai';
 import { 
   getDate,
-  // handleBroadcastMsg,
+  handleBroadcastMsg,
   handleType1Msg,
   handleType2Msg,
   handlReceiveMsg,
   // createWs,
   // handleWssOpen,
   // handleWssClose,
+  transferToJsonMsg,
   // handleWssConnection
 } from '../src/app';
 
@@ -21,8 +22,28 @@ describe('getDate', function() {
   });
 });
 
-let users = [];
+describe('handleBroadcastMsg', function() {
+  it('test handleBroadcastMsg', function() {
+    let result:Array<String> = [];
+    const fakeWss = {
+      clients: [
+        {
+          send: function (msg:string) {
+            result.push(msg)
+          }
+        }
+      ],
+    }
+    const validateData = [
+      'test'
+    ];
 
+    handleBroadcastMsg(fakeWss, 'test');
+    expect(result).deep.equal(validateData);
+  });
+});
+
+let users = [];
 describe('handleType1Msg', function() {
   it('test output is correct', function() {
     const inputData = {
@@ -159,5 +180,25 @@ describe('handlReceiveMsg', function() {
     expect(result2.users).deep.equal(predict2.users);
     expect(result2.selectAvatarId).equal(predict2.selectAvatarId);
     expect(result2.nickname).equal(predict2.nickname);
+  });
+});
+
+describe('transferToJsonMsg', function() {
+  it('test transferToJsonMsg undefined', function() {
+    const result = transferToJsonMsg('');
+
+    expect(result).equal(undefined);
+  });
+
+  it('test transferToJsonMsg receiveMsg type', function() {
+    const result = transferToJsonMsg('{"type":1,"nickname":"Nickname","selectAvatarId":1,"uuid":"1639754682419-72473"}');
+    const predict = {
+      "type":1,
+      "nickname":"Nickname",
+      "selectAvatarId":1,
+      "uuid":"1639754682419-72473"
+    };
+
+    expect(result).deep.equal(predict);
   });
 });

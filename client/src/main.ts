@@ -1,6 +1,4 @@
 import { createApp } from 'vue'
-// import App from './App.vue'
-import store from "@store";
 import App from "./App.vue";
 
 
@@ -8,28 +6,22 @@ declare interface chatroomData {
   msg: string;
 };
 
-// interface receiveMsgData {
-//   type: number;
-//   msgid: number;
-//   uuid: string;
-//   date: string;
-//   msg: string;
-//   users: Array<user>;
-//   selectAvatarId: number;
-//   nickname: string;
-// }
-
+interface user {
+  nickname: string;
+}
 declare interface receiveMsgData {
   type: number;
   msgid: number;
   uuid: string;
   date: string;
   msg: string;
-  users: Array<string>;
+  users: Array<user>;
   selectAvatarId: number;
   nickname: string;
 }
-
+declare interface state {
+  wsRes: Array<receiveMsgData>;
+}
 declare interface sendingMsg {
   type: number;
   msg: string;
@@ -37,11 +29,6 @@ declare interface sendingMsg {
   selectAvatarId: number;
   uuid: string;
 }
-
-declare interface state {
-  wsRes: Array<receiveMsgData>;
-}
-
 interface loginInfo {
   nickname: string;
   uuid: number;
@@ -58,5 +45,4 @@ declare interface startPopupData {
 
 const app = createApp(App);
 app.config.unwrapInjectedRef = true;
-app.use(store);
 app.mount("#app");

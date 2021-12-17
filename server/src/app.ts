@@ -1,13 +1,11 @@
-import { WebSocketServer, OPEN } from 'ws';
+import * as WebSocket from 'ws';
 import { pipe } from 'fp-ts/function'
-import { number } from 'fp-ts';
 import { Either, tryCatch, isRight } from 'fp-ts/Either'
 import * as J from 'fp-ts/Json';
 
+
 type userType = { nickname: string };
 let Users:userType[] = [];
-
-interface emptyDict {};
 interface jsonMsg {
   type: number;
   nickname: string;
@@ -28,15 +26,21 @@ interface broadcastMsg {
   selectAvatarId?: number;
   nickname?: string;
 }
+interface Event {
+  message: string;
+  [key: string]: any;
+}
+
+interface emptyDict {
+}
 
 function getDate():string {
-  // return moment().format('HH:mm')
   const date = new Date();
   return `${date.getHours()}:${date.getMinutes()}`;
 }
 
-function handleBroadcastMsg(server: any, msg: string):void {
-  server.clients.forEach(function each(client: any) {
+function handleBroadcastMsg(wss: any, msg: string):void {
+  wss.clients.forEach((client:any) => {
     client.send(msg);
   });
 }
@@ -78,10 +82,10 @@ function handleType2Msg(jsonMsg: jsonMsg):broadcastMsg {
   return broadcastMsg;
 }
 
-function handlReceiveMsg(jsonMsg: jsonMsg):any {
+function handlReceiveMsg(jsonMsg: jsonMsg):broadcastMsg|emptyDict {
   const getTime:number = new Date().getTime();
   const msgType:number = jsonMsg.type;
-  let broadcastMsg:broadcastMsg = {};
+  let broadcastMsg:broadcastMsg|emptyDict = {};
   switch(msgType) {
     case 1:
       broadcastMsg = handleType1Msg(jsonMsg);
@@ -96,64 +100,56 @@ function handlReceiveMsg(jsonMsg: jsonMsg):any {
   return broadcastMsg;
 }
 
-function createWs(port: number):any {
-  const wss = new WebSocketServer({ port: port });
-  wss.on('error', function(event: any) {
-    console.log('Server error: ', event.message);
+function createWs(port:number):any {
+  const wss = new WebSocket.WebSocketServer({ port: port });
+  wss.on('error', function(event: Event) {
     wss.close();
   });
 
   return wss;
 }
 
-function handleWssOpen (wss:any):any {
-  wss.on('open', (evt:any) => {
+function handleWssOpen(wss:WebSocket):WebSocket {
+  wss.on('open', (event:Event) => {
     console.log('Server connected');
   });
 
   return wss;
 }
 
-function handleWssClose (wss:any):any {
-  wss.on('close', (evt:any) => {
+function handleWssClose(wss:WebSocket):WebSocket {
+  wss.on('close', (event:Event) => {
     console.log('Server disconnected');
   });
 
   return wss;
 }
 
-// const _validateStringParsing = (str: string): Either<Error, unknown> => 
-//   tryCatch<Error, unknown>(
-//     () => JSON.parse(str),
-//     (err) => (err instanceof Error ? err : Error('parsing Error'))
-//   );
+function transferToJsonMsg (reveiveData:string):jsonMsg|void {
+  if (!isRight(J.parse(reveiveData))) { return; }
 
-function handleWssConnection (wss:any):void {
-  wss.on('connection', function connection(ws:any) {
+  const jsonMsg:jsonMsg = JSON.parse(reveiveData);
+
+  return jsonMsg;
+}
+
+function handleWssConnection (wss:WebSocket):void {
+  wss.on('connection', function connection(ws:WebSocket) {
     ws.on('message', function message(reveiveData:string) {
-      // const validatedData = _validateStringParsing(reveiveData);
-      // console.log('validatedData: ', validatedData);
-      // console.log('validatedData2: ', J.parse(reveiveData));
-      if (!isRight(J.parse(reveiveData))) { return; }
-
-      // const jsonMsg:jsonMsg = transformMsg.right;
-      const jsonMsg:jsonMsg = JSON.parse(reveiveData);
-      console.log('jsonMsg: ', jsonMsg);
-      const broadcastMsg:broadcastMsg | {} = handlReceiveMsg(jsonMsg);
-
-      if (broadcastMsg) {
-        console.log('broadcastMsg: ', broadcastMsg);
-        handleBroadcastMsg(wss, JSON.stringify(broadcastMsg));
+      const jsonMsg = transferToJsonMsg(reveiveData);
+      
+      if (jsonMsg) {
+        const broadcastMsg:broadcastMsg|emptyDict = handlReceiveMsg(jsonMsg);
+        const stringMsg:string = JSON.stringify(broadcastMsg);
+        handleBroadcastMsg(wss, stringMsg);
       }
     });
   }); 
 }
 
 function main(): void {
-  const port:number = 8001;
-
   pipe(
-    createWs(port),
+    createWs(8001),
     handleWssOpen,
     handleWssClose,
     handleWssConnection
@@ -171,5 +167,6 @@ export {
   createWs,
   handleWssOpen,
   handleWssClose,
+  transferToJsonMsg,
   handleWssConnection
 };

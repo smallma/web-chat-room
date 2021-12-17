@@ -38,18 +38,18 @@
     },
     data() {
       return {
-        avatarCount: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+        avatarCount: Array(24 - 1 + 1).fill().map((_, idx) => 1 + idx),
         selectAvatarId: 1,
         uuid: Math.floor(new Date().getTime()) + '-' +  Math.floor(Math.random() * 100000),
         nickname: 'Nickname'
       };
     },
     methods: {
-      clickAvatar: function(event: any) {
+      clickAvatar: function(event: PointerEvent) {
         const selectId:string = event.target.getAttribute('data-id');
         this.selectAvatarId = parseInt(selectId);
       },
-      clickJoin: function(event: any) {
+      clickJoin: function(event: PointerEvent) {
         const joinInfo = {
           nickname: this.nickname,
           uuid: this.uuid,

@@ -1,6 +1,5 @@
 import { mount, shallowMount } from '@vue/test-utils';
 import StartPopup from "../../src/components/StartPopup.vue";
-import Vuex from 'vuex';
 
 
 describe('StartPopup.vue', () => {

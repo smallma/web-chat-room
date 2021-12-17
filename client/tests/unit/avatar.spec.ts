@@ -1,6 +1,5 @@
 import { mount } from '@vue/test-utils';
 import Avatar from "../../src/components/Avatar.vue";
-import Vuex from 'vuex';
 
 
 describe('Avartar.vue', () => {
@@ -12,7 +11,6 @@ describe('Avartar.vue', () => {
       },
     })
 
-    // expect(wrapper.html()).toContain('<div class="avatar avatar-1 active">');
     expect(wrapper.classes()).toContain('active');
     expect(wrapper.classes()).toContain('avatar-1');
   })

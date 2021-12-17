@@ -44,9 +44,6 @@
         transUser: {},
       }
     },
-    // mounted() {
-    //   console.log('$wsRes: ', this.injectWsRes);
-    // },
     watch: {
       injectWsRes: {
         handler: function (new_value, old_value) {
@@ -68,7 +65,7 @@
       },
     },
     methods: {
-      clickSend: function(event: any){
+      clickSend: function(event: KeyboardEvent) {
         if (!this.msg) { return; }
 
         const sendingMsg:sendingMsg = {

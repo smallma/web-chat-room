@@ -1,7 +1,6 @@
 <template>
   <div>
     <figure class="bg" />
-    <!-- <img class="framework-logo" alt="Vue logo" src="./assets/logo.png" /> -->
     <transition>
       <StartPopup 
         v-if="injectStep === 0"
@@ -18,13 +17,17 @@
 </template>
 
 <script lang="ts">
+  interface user {
+    nickname: string;
+  }
+
   interface receiveMsgData {
     type: number;
     msgid: number;
     uuid: string;
     date: string;
     msg: string;
-    users: Array<string>;
+    users: Array<user>;
     selectAvatarId: number;
     nickname: string;
   }
@@ -33,17 +36,13 @@
     wsRes: Array<receiveMsgData>;
   }
 
-  // import Socket from "./utils/socket";
   import { computed } from "vue";
-  import { mapState, mapMutations } from "vuex";
   import mixinWebsocket from './utils/ws.compotition';
-  // import { mixinWebsocket } from './utils/ws';
 
   import StartPopup from './components/StartPopup.vue'
   import Chatroom from './components/Chatroom.vue'
 
   export default {
-    // mixins: [mixinWebsocket],
     components: {
       StartPopup,
       Chatroom
@@ -59,20 +58,14 @@
       }
     },
     created() {
-      console.log('mixinWebsocket: ', mixinWebsocket);
-      // this.initWebsocket((msg) => {
-      mixinWebsocket.initWebsocket((msg) => {
+      mixinWebsocket.initWebsocket((msg:receiveMsgData) => {
         this.setWsRes(msg)
       })
     },
     destroy(){
-      // this.websocketclose();
       mixinWebsocket.websocketclose();
     },
     methods: {
-      // ...mapMutations({
-      //   setWsRes: "ws/setWsRes",
-      // }),
       updateLoginInfo: function(loginInfo: loginInfo) {
         console.log('updateLoginInfo: ', loginInfo);
         this.userInfo = loginInfo;
@@ -88,23 +81,10 @@
         this.injectUser = loginInfo;
         this.injectStep = 1;
       },
-      setWsRes: function(payload:any) {
-        console.log('payload: ', payload);
-        this.wsRes.push(payload);
+      setWsRes: function(receiveMsgData:receiveMsgData) {
+        console.log('receiveMsgData: ', receiveMsgData);
+        this.injectWsRes.push(receiveMsgData);
       }
-    },
-    computed: {
-      // ...mapState('ws', ['wsRes']),
-      
-    },
-    watch: {
-      wsRes: {
-        handler: function(newValue:state, oldValue:state) {
-          this.injectWsRes = [...this.wsRes];
-        },
-        deep: true,
-        immediate: true
-      },
     },
     provide() {
       return {

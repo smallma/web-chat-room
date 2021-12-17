@@ -1,14 +1,14 @@
 {
   "stats": {
-    "suites": 4,
-    "tests": 6,
-    "passes": 6,
+    "suites": 6,
+    "tests": 9,
+    "passes": 9,
     "pending": 0,
     "failures": 0,
-    "start": "2021-12-12T02:14:04.875Z",
-    "end": "2021-12-12T02:14:04.882Z",
-    "duration": 7,
-    "testsRegistered": 6,
+    "start": "2021-12-17T15:50:14.316Z",
+    "end": "2021-12-17T15:50:14.327Z",
+    "duration": 11,
+    "testsRegistered": 9,
     "passPercent": 100,
     "pendingPercent": 0,
     "other": 0,
@@ -18,7 +18,7 @@
   },
   "results": [
     {
-      "uuid": "d4c665a6-3523-4aff-a729-7d52b27a2d1d",
+      "uuid": "67341148-0027-4122-9dee-2c93eb1b0a4d",
       "title": "",
       "fullFile": "",
       "file": "",
@@ -27,7 +27,7 @@
       "tests": [],
       "suites": [
         {
-          "uuid": "1e99d5ed-8c34-4c95-8e16-4e3d0131765c",
+          "uuid": "3cfefc4b-5e2b-4d58-a8d9-4ff9b9d8883d",
           "title": "getDate",
           "fullFile": "/Users/cmd/Documents/Projects/Rain/Personal/web-chat-room/server/tests/app.test.ts",
           "file": "/tests/app.test.ts",
@@ -47,15 +47,15 @@
               "context": null,
               "code": "const result = (0, app_1.getDate)();\nconst date = new Date();\nconst validateData = `${date.getHours()}:${date.getMinutes()}`;\n(0, chai_1.expect)(result).equal(validateData);",
               "err": {},
-              "uuid": "4c92b6e6-d13b-407a-af7d-7760f1c1bf9c",
-              "parentUUID": "1e99d5ed-8c34-4c95-8e16-4e3d0131765c",
+              "uuid": "c06ec01b-442f-4d8f-9010-68a2435b6caf",
+              "parentUUID": "3cfefc4b-5e2b-4d58-a8d9-4ff9b9d8883d",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "4c92b6e6-d13b-407a-af7d-7760f1c1bf9c"
+            "c06ec01b-442f-4d8f-9010-68a2435b6caf"
           ],
           "failures": [],
           "pending": [],
@@ -66,7 +66,46 @@
           "_timeout": 2000
         },
         {
-          "uuid": "0eb66c6b-8389-41fd-9efb-81b0bdae169c",
+          "uuid": "3ea06de8-1a1c-41d4-b114-d4725c8a40c4",
+          "title": "handleBroadcastMsg",
+          "fullFile": "/Users/cmd/Documents/Projects/Rain/Personal/web-chat-room/server/tests/app.test.ts",
+          "file": "/tests/app.test.ts",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "test handleBroadcastMsg",
+              "fullTitle": "handleBroadcastMsg test handleBroadcastMsg",
+              "timedOut": false,
+              "duration": 1,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let result = [];\nconst fakeWss = {\n    clients: [\n        {\n            send: function (msg) {\n                result.push(msg);\n            }\n        }\n    ],\n};\nconst validateData = [\n    'test'\n];\n(0, app_1.handleBroadcastMsg)(fakeWss, 'test');\n(0, chai_1.expect)(result).deep.equal(validateData);",
+              "err": {},
+              "uuid": "6b124842-ea7d-4f32-89a0-1d3012ce3205",
+              "parentUUID": "3ea06de8-1a1c-41d4-b114-d4725c8a40c4",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "6b124842-ea7d-4f32-89a0-1d3012ce3205"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 1,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        },
+        {
+          "uuid": "a80a07ba-b382-4d59-a04d-13159d3edeab",
           "title": "handleType1Msg",
           "fullFile": "/Users/cmd/Documents/Projects/Rain/Personal/web-chat-room/server/tests/app.test.ts",
           "file": "/tests/app.test.ts",
@@ -86,15 +125,15 @@
               "context": null,
               "code": "const inputData = {\n    type: 1,\n    nickname: 'test1',\n    uuid: 'uuid123',\n    selectAvatarId: 100\n};\nusers.push({\n    nickname: inputData.nickname,\n});\nconst predict = {\n    type: 1,\n    uuid: inputData.uuid,\n    msg: inputData.nickname + ' join chat room',\n    users: users,\n    selectAvatarId: inputData.selectAvatarId,\n    nickname: inputData.nickname\n};\nconst result = (0, app_1.handleType1Msg)(inputData);\n(0, chai_1.expect)(result.type).equal(predict.type);\n(0, chai_1.expect)(result.uuid).equal(predict.uuid);\n(0, chai_1.expect)(result.msg).equal(predict.msg);\n(0, chai_1.expect)(result.users).deep.equal(predict.users);\n(0, chai_1.expect)(result.selectAvatarId).equal(predict.selectAvatarId);\n(0, chai_1.expect)(result.nickname).equal(predict.nickname);",
               "err": {},
-              "uuid": "56488ae5-cc04-4ce2-883e-cb0c31c48f81",
-              "parentUUID": "0eb66c6b-8389-41fd-9efb-81b0bdae169c",
+              "uuid": "956b8d7e-2a65-46ce-b40c-0f120b8a3d14",
+              "parentUUID": "a80a07ba-b382-4d59-a04d-13159d3edeab",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "56488ae5-cc04-4ce2-883e-cb0c31c48f81"
+            "956b8d7e-2a65-46ce-b40c-0f120b8a3d14"
           ],
           "failures": [],
           "pending": [],
@@ -105,7 +144,7 @@
           "_timeout": 2000
         },
         {
-          "uuid": "6ecf61ab-45d7-4817-95a2-a21398b0f999",
+          "uuid": "f5d66ac2-4cd3-4088-a4a5-a5c633cead16",
           "title": "handleType2Msg",
           "fullFile": "/Users/cmd/Documents/Projects/Rain/Personal/web-chat-room/server/tests/app.test.ts",
           "file": "/tests/app.test.ts",
@@ -125,15 +164,15 @@
               "context": null,
               "code": "const inputData = {\n    type: 2,\n    nickname: 'test2',\n    msg: 'hello',\n    uuid: 'uuid1234',\n    selectAvatarId: 1000\n};\nconst predict = {\n    type: 2,\n    uuid: inputData.uuid,\n    msg: inputData.msg,\n    users: users,\n    selectAvatarId: inputData.selectAvatarId,\n    nickname: inputData.nickname\n};\nconst result = (0, app_1.handleType2Msg)(inputData);\n(0, chai_1.expect)(result.type).equal(predict.type);\n(0, chai_1.expect)(result.uuid).equal(predict.uuid);\n(0, chai_1.expect)(result.msg).equal(predict.msg);\n(0, chai_1.expect)(result.users).deep.equal(predict.users);\n(0, chai_1.expect)(result.selectAvatarId).equal(predict.selectAvatarId);\n(0, chai_1.expect)(result.nickname).equal(predict.nickname);",
               "err": {},
-              "uuid": "71f374f4-9651-4831-ba61-18db58ca7714",
-              "parentUUID": "6ecf61ab-45d7-4817-95a2-a21398b0f999",
+              "uuid": "e329ecc4-86ff-4063-9023-ee895d394445",
+              "parentUUID": "f5d66ac2-4cd3-4088-a4a5-a5c633cead16",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "71f374f4-9651-4831-ba61-18db58ca7714"
+            "e329ecc4-86ff-4063-9023-ee895d394445"
           ],
           "failures": [],
           "pending": [],
@@ -144,7 +183,7 @@
           "_timeout": 2000
         },
         {
-          "uuid": "fe68c761-67a5-4705-90fa-e71131d003aa",
+          "uuid": "c5d1d51b-e20f-4a7c-a2ed-2e6a2df32447",
           "title": "handlReceiveMsg",
           "fullFile": "/Users/cmd/Documents/Projects/Rain/Personal/web-chat-room/server/tests/app.test.ts",
           "file": "/tests/app.test.ts",
@@ -164,8 +203,8 @@
               "context": null,
               "code": "const inputData0 = {\n    type: 0,\n    nickname: 'test1',\n    uuid: 'uuid123',\n    selectAvatarId: 100\n};\nconst predict0 = {};\nconst result0 = (0, app_1.handlReceiveMsg)(inputData0);\n(0, chai_1.expect)(result0).deep.equal(predict0);",
               "err": {},
-              "uuid": "a4a4acde-29aa-4695-bd62-bf96e3f4ed5c",
-              "parentUUID": "fe68c761-67a5-4705-90fa-e71131d003aa",
+              "uuid": "46431f92-c7a9-4a9a-88fc-593ac3cdea93",
+              "parentUUID": "c5d1d51b-e20f-4a7c-a2ed-2e6a2df32447",
               "isHook": false,
               "skipped": false
             },
@@ -182,8 +221,8 @@
               "context": null,
               "code": "const inputData1 = {\n    type: 1,\n    nickname: 'test1',\n    uuid: 'uuid123',\n    selectAvatarId: 100\n};\nusers.push({\n    nickname: inputData1.nickname,\n});\nconst predict1 = {\n    type: 1,\n    uuid: inputData1.uuid,\n    msg: inputData1.nickname + ' join chat room',\n    users: users,\n    selectAvatarId: inputData1.selectAvatarId,\n    nickname: inputData1.nickname\n};\nconst result1 = (0, app_1.handlReceiveMsg)(inputData1);\n(0, chai_1.expect)(result1.type).equal(predict1.type);\n(0, chai_1.expect)(result1.uuid).equal(predict1.uuid);\n(0, chai_1.expect)(result1.msg).equal(predict1.msg);\n(0, chai_1.expect)(result1.users).deep.equal(predict1.users);\n(0, chai_1.expect)(result1.selectAvatarId).equal(predict1.selectAvatarId);\n(0, chai_1.expect)(result1.nickname).equal(predict1.nickname);",
               "err": {},
-              "uuid": "64032618-3f82-40a5-a35e-b0962510d7e8",
-              "parentUUID": "fe68c761-67a5-4705-90fa-e71131d003aa",
+              "uuid": "040cbb32-b57c-4de0-8c8c-436752c012f6",
+              "parentUUID": "c5d1d51b-e20f-4a7c-a2ed-2e6a2df32447",
               "isHook": false,
               "skipped": false
             },
@@ -200,22 +239,80 @@
               "context": null,
               "code": "const inputData2 = {\n    type: 2,\n    nickname: 'test2',\n    msg: 'hello',\n    uuid: 'uuid1234',\n    selectAvatarId: 1000\n};\nconst predict2 = {\n    type: 2,\n    uuid: inputData2.uuid,\n    msg: inputData2.msg,\n    users: users,\n    selectAvatarId: inputData2.selectAvatarId,\n    nickname: inputData2.nickname\n};\nconst result2 = (0, app_1.handlReceiveMsg)(inputData2);\n(0, chai_1.expect)(result2.type).equal(predict2.type);\n(0, chai_1.expect)(result2.uuid).equal(predict2.uuid);\n(0, chai_1.expect)(result2.msg).equal(predict2.msg);\n(0, chai_1.expect)(result2.users).deep.equal(predict2.users);\n(0, chai_1.expect)(result2.selectAvatarId).equal(predict2.selectAvatarId);\n(0, chai_1.expect)(result2.nickname).equal(predict2.nickname);",
               "err": {},
-              "uuid": "a7d90231-f3c0-4aaf-adee-9f9757abeb81",
-              "parentUUID": "fe68c761-67a5-4705-90fa-e71131d003aa",
+              "uuid": "9a1e3bd0-6ecf-4b1d-ad5b-131e8a9896f4",
+              "parentUUID": "c5d1d51b-e20f-4a7c-a2ed-2e6a2df32447",
               "isHook": false,
               "skipped": false
             }
           ],
           "suites": [],
           "passes": [
-            "a4a4acde-29aa-4695-bd62-bf96e3f4ed5c",
-            "64032618-3f82-40a5-a35e-b0962510d7e8",
-            "a7d90231-f3c0-4aaf-adee-9f9757abeb81"
+            "46431f92-c7a9-4a9a-88fc-593ac3cdea93",
+            "040cbb32-b57c-4de0-8c8c-436752c012f6",
+            "9a1e3bd0-6ecf-4b1d-ad5b-131e8a9896f4"
           ],
           "failures": [],
           "pending": [],
           "skipped": [],
           "duration": 1,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        },
+        {
+          "uuid": "7183ac66-d580-4111-a28d-8b861dd2bdb9",
+          "title": "transferToJsonMsg",
+          "fullFile": "/Users/cmd/Documents/Projects/Rain/Personal/web-chat-room/server/tests/app.test.ts",
+          "file": "/tests/app.test.ts",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "test transferToJsonMsg undefined",
+              "fullTitle": "transferToJsonMsg test transferToJsonMsg undefined",
+              "timedOut": false,
+              "duration": 0,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const result = (0, app_1.transferToJsonMsg)('');\n(0, chai_1.expect)(result).equal(undefined);",
+              "err": {},
+              "uuid": "1b76cd05-9785-4a85-9a6b-02199befb602",
+              "parentUUID": "7183ac66-d580-4111-a28d-8b861dd2bdb9",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "test transferToJsonMsg receiveMsg type",
+              "fullTitle": "transferToJsonMsg test transferToJsonMsg receiveMsg type",
+              "timedOut": false,
+              "duration": 0,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const result = (0, app_1.transferToJsonMsg)('{\"type\":1,\"nickname\":\"Nickname\",\"selectAvatarId\":1,\"uuid\":\"1639754682419-72473\"}');\nconst predict = {\n    \"type\": 1,\n    \"nickname\": \"Nickname\",\n    \"selectAvatarId\": 1,\n    \"uuid\": \"1639754682419-72473\"\n};\n(0, chai_1.expect)(result).deep.equal(predict);",
+              "err": {},
+              "uuid": "65af5bc4-9aa6-4925-9b70-a202570d3ebe",
+              "parentUUID": "7183ac66-d580-4111-a28d-8b861dd2bdb9",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "1b76cd05-9785-4a85-9a6b-02199befb602",
+            "65af5bc4-9aa6-4925-9b70-a202570d3ebe"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
           "root": false,
           "rootEmpty": false,
           "_timeout": 2000
