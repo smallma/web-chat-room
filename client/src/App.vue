@@ -17,27 +17,8 @@
 </template>
 
 <script lang="ts">
-  interface user {
-    nickname: string;
-  }
-
-  interface receiveMsgData {
-    type: number;
-    msgid: number;
-    uuid: string;
-    date: string;
-    msg: string;
-    users: Array<user>;
-    selectAvatarId: number;
-    nickname: string;
-  }
-
-  interface state {
-    wsRes: Array<receiveMsgData>;
-  }
-
   import { computed } from "vue";
-  import mixinWebsocket from './utils/ws.compotition';
+  import mixinWebsocket from './utils/ws';
 
   import StartPopup from './components/StartPopup.vue'
   import Chatroom from './components/Chatroom.vue'
@@ -62,12 +43,11 @@
         this.setWsRes(msg)
       })
     },
-    destroy(){
-      mixinWebsocket.websocketclose();
-    },
     methods: {
+      sendMsg: function(broadcastMsg:preSendMsg) {
+        mixinWebsocket.websocketsend(JSON.stringify(broadcastMsg));
+      },
       updateLoginInfo: function(loginInfo: loginInfo) {
-        console.log('updateLoginInfo: ', loginInfo);
         this.userInfo = loginInfo;
 
         const broadcastMsg = {
@@ -77,12 +57,11 @@
           uuid: loginInfo.uuid
         };
 
-        mixinWebsocket.websocketsend(JSON.stringify(broadcastMsg));
         this.injectUser = loginInfo;
         this.injectStep = 1;
+        this.sendMsg(broadcastMsg);
       },
       setWsRes: function(receiveMsgData:receiveMsgData) {
-        console.log('receiveMsgData: ', receiveMsgData);
         this.injectWsRes.push(receiveMsgData);
       }
     },

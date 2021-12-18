@@ -20,21 +20,10 @@ interface receiveMsg {
 
 const wsURL:string = process.env.VUE_APP_WS_URL || 'ws://localhost:8001';
 let ws:WebSocket;
-
-function websocketonopen(event: Event):void {
-  console.log('ws connecting: ', event);
-}
-
-function websocketonerror(event:Event):void {
-  console.error('ws connect failed, error:');
-}
+let testValue:string;
 
 function websocketsend(msg:string):void {
   ws.send(msg);
-}
-
-function websocketclose(event: Event):void {
-  console.log('ws close connection');
 }
 
 function websockemessage(receiveMsg:receiveMsg, cb:(msg:receiveMsgData) => void):void {
@@ -46,16 +35,25 @@ function websockemessage(receiveMsg:receiveMsg, cb:(msg:receiveMsgData) => void)
 
 function initWebsocket(cb:(msg:receiveMsgData)=>void):void {
   ws = new WebSocket(wsURL);
-  ws.onopen = websocketonopen;
-  ws.onerror = websocketonerror;
-  ws.onmessage = function (receiveMsg:receiveMsg):void {
+  
+  ws.onopen = function(event: Event):void {
+    console.log('ws connecting: ', event);
+  };
+  
+  ws.onerror = function(event:Event):void {
+    console.error('ws connect failed, error');
+  };
+  
+  ws.onmessage = function(receiveMsg:receiveMsg):void {
     websockemessage(receiveMsg, cb);
   };
-  ws.onclose = websocketclose;
+  
+  ws.onclose = function(event: Event):void {
+    console.log('ws close connection');
+  };
 }
 export default {
   initWebsocket,
   websockemessage,
-  websocketsend,
-  websocketclose,
+  websocketsend
 }

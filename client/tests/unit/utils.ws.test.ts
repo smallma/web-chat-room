@@ -1,5 +1,6 @@
 // import { mount, shallowMount } from '@vue/test-utils';
-import mixinWebsocket from '../../src/utils/ws.compotition'
+import ws from '../../src/utils/ws';
+import mixinWebsocket from '../../src/utils/ws'
 
 
 // function websockemessage(receiveMsg:receiveMsg, cb:(msg:receiveMsgData) => void):void {
@@ -57,4 +58,35 @@ describe('compositions', () => {
 
     expect(actual).toMatchObject(expected)
   });
+  
+  // it('test compositions', async () => {
+  //   let mockWs = mixinWebsocket;
+
+  //   mockWs.initWebsocket = () => {
+  //     ws = {
+  //       send: (msg:string) => {
+  //         testValue = msg;
+  //       }
+  //     }
+  //   };
+
+  //   mockWs.websockemessage = () => {
+  //     return testValue;
+  //   }
+
+  //   mockWs.websocketsend = (msg:string) => {
+  //     return msg;
+  //   }
+
+  //   jest.mock('../../src/utils/ws', () => mockWs)
+  //   const { initWebsocket, websocketsend, websockemessage } = require('../../src/utils/ws');
+    
+  //   initWebsocket();
+  //   websocketsend('test')
+  //   const excepted = websockemessage();
+
+  //   console.log('excepted: ', excepted);
+  //   // expect(websocketsend('test')).toBe('test')
+  //   expect(1).toBe(1)
+  // });
 })

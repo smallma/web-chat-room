@@ -34,7 +34,6 @@ describe('Chatroom.vue', () => {
   })
 
   test('Test auto focus', async () => {
-    let sendMsg;
     const wrapper = mount(Chatroom, {
       attachTo: document.body,
       global: {
@@ -47,7 +46,6 @@ describe('Chatroom.vue', () => {
           mixinWebsocket: {
             initWebsocket: function () {},
             websocketsend: function (msg:string) {
-              sendMsg = msg;
             },
             websocketclose: function () {},
           }
@@ -55,29 +53,10 @@ describe('Chatroom.vue', () => {
       }
     })
 
-
-    // const input = wrapper.get('[data-test="msg"]')
-    // await input.setValue('Hello World')
-    wrapper.setData({injectWsRes: [
-      {
-        type: 1,
-        msgid: 1,
-        uuid: 'test',
-        date: 'test',
-        msg: 'test',
-        users: [],
-        selectAvatarId: 1,
-        nickname: 'test'
-      }
-    ]});
-
-    // expect(sendMsg).toBe('{"type":2,"msg":"Hello World"}')
-
-    // let input = wrapper.find('input').element
+    wrapper.vm.focusInput();
 
     let input = wrapper.get('[data-test="msg"]').element
     console.log(input, wrapper);
-    // expect(input).toBe(document.activeElement);
-    expect(1).toBe(1);
+    expect(input).toBe(document.activeElement);
   })
 })

@@ -16,7 +16,7 @@ describe('getDate', function() {
   it('test getDate', function() {
     const result = getDate();
     const date = new Date();
-    const validateData = `${date.getHours()}:${date.getMinutes()}`;
+    const validateData = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 
     expect(result).equal(validateData);
   });

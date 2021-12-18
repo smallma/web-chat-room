@@ -36,7 +36,7 @@ interface emptyDict {
 
 function getDate():string {
   const date = new Date();
-  return `${date.getHours()}:${date.getMinutes()}`;
+  return `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 }
 
 function handleBroadcastMsg(wss: any, msg: string):void {
@@ -82,7 +82,7 @@ function handleType2Msg(jsonMsg: jsonMsg):broadcastMsg {
   return broadcastMsg;
 }
 
-function handlReceiveMsg(jsonMsg: jsonMsg):broadcastMsg|emptyDict {
+function handlReceiveMsg(jsonMsg: jsonMsg):broadcastMsg {
   const getTime:number = new Date().getTime();
   const msgType:number = jsonMsg.type;
   let broadcastMsg:broadcastMsg|emptyDict = {};
@@ -164,9 +164,9 @@ export {
   handleType1Msg,
   handleType2Msg,
   handlReceiveMsg,
-  createWs,
-  handleWssOpen,
-  handleWssClose,
+  // createWs,
+  // handleWssOpen,
+  // handleWssClose,
   transferToJsonMsg,
-  handleWssConnection
+  // handleWssConnection,
 };

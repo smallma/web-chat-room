@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.17% </span>
+                <span class="strong">86.95% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/23</span>
+                <span class='fraction'>20/23</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">50% </span>
+                <span class="strong">70% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/10</span>
+                <span class='fraction'>7/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">52.17% </span>
+                <span class="strong">86.95% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/23</span>
+                <span class='fraction'>20/23</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -278,6 +278,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -285,39 +307,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -432,7 +432,7 @@
   }
 &nbsp;
   import { computed } from "vue";
-  import mixinWebsocket from './utils/ws.compotition';
+  import mixinWebsocket from './utils/ws';
 &nbsp;
   import StartPopup from './components/StartPopup.vue'
   import Chatroom from './components/Chatroom.vue'
@@ -457,28 +457,28 @@
 <span class="cstat-no" title="statement not covered" >        this.</span>setWsRes(msg)
       })
     },
-    destroy<span class="fstat-no" title="function not covered" >(){</span>
-<span class="cstat-no" title="statement not covered" >      mixinWebsocket.w</span>ebsocketclose();
-    },
     methods: {
-      updateLoginInfo: <span class="fstat-no" title="function not covered" >function(l</span>oginInfo: loginInfo) {
-<span class="cstat-no" title="statement not covered" >        console.</span>log('updateLoginInfo: ', loginInfo);
-<span class="cstat-no" title="statement not covered" >        this.u</span>serInfo = loginInfo;
+      sendMsg: <span class="fstat-no" title="function not covered" >function(b</span>roadcastMsg:preSendMsg) {
+<span class="cstat-no" title="statement not covered" >        mixinWebsocket.w</span>ebsocketsend(JSON.stringify(broadcastMsg));
+      },
+      updateLoginInfo: function(loginInfo: loginInfo) {
+        console.log('updateLoginInfo: ', loginInfo);
+        this.userInfo = loginInfo;
 &nbsp;
-        const broadcastMsg = <span class="cstat-no" title="statement not covered" >{</span>
+        const broadcastMsg = {
           type: 1,
           nickname: loginInfo.nickname,
           selectAvatarId: loginInfo.selectAvatarId,
           uuid: loginInfo.uuid
         };
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        mixinWebsocket.w</span>ebsocketsend(JSON.stringify(broadcastMsg));
-<span class="cstat-no" title="statement not covered" >        this.i</span>njectUser = loginInfo;
-<span class="cstat-no" title="statement not covered" >        this.i</span>njectStep = 1;
+        this.injectUser = loginInfo;
+        this.injectStep = 1;
+        this.sendMsg(broadcastMsg);
       },
-      setWsRes: <span class="fstat-no" title="function not covered" >function(r</span>eceiveMsgData:receiveMsgData) {
-<span class="cstat-no" title="statement not covered" >        console.</span>log('receiveMsgData: ', receiveMsgData);
-<span class="cstat-no" title="statement not covered" >        this.i</span>njectWsRes.push(receiveMsgData);
+      setWsRes: function(receiveMsgData:receiveMsgData) {
+        console.log('receiveMsgData: ', receiveMsgData);
+        this.injectWsRes.push(receiveMsgData);
       }
     },
     provide() {
@@ -565,7 +565,7 @@ figure {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Sat Dec 18 2021 00:48:57 GMT+0800 (Taipei Standard Time)
+                at Sat Dec 18 2021 23:06:39 GMT+0800 (Taipei Standard Time)
             </div>
         </div>
         <script src="../prettify.js"></script>

@@ -38,7 +38,7 @@
     },
     data() {
       return {
-        avatarCount: Array(24 - 1 + 1).fill().map((_, idx) => 1 + idx),
+        avatarCount: Array(24).fill().map((_, index) => 1 + index),
         selectAvatarId: 1,
         uuid: Math.floor(new Date().getTime()) + '-' +  Math.floor(Math.random() * 100000),
         nickname: 'Nickname'
@@ -56,7 +56,6 @@
           selectAvatarId: this.selectAvatarId
         };
 
-        console.log('joinInfo: ', joinInfo);
         this.$emit('joinChatRoom', joinInfo);
       }
     }
@@ -69,7 +68,6 @@
     top: 50%;
     left: 50%;
     width: 70vw;
-    // background-color: rgba(255, 255, 255, 0.6);
     transform: translate3d(-50%, -50%, 0);
 
     .start-hint {
@@ -192,11 +190,6 @@
           background-color: #2d2d2d;
         }
       }
-
-      
-    
     }
-
-    
   }
 </style>

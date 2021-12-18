@@ -46,25 +46,28 @@
     },
     watch: {
       injectWsRes: {
-        handler: function (new_value, old_value) {
+        handler: function (new_value) {
           this.transWsRes = JSON.parse(JSON.stringify(new_value));
 
-          this.$nextTick(function () {
-            const container = this.$el.querySelector(".chats-container");
-            container.scrollTop = container.scrollHeight;
-            this.$refs.inputText.focus();
+          this.$nextTick(() => {
+            this.focusInput();
           });
         },
         deep: true
       },
       injectUser: {
-        handler: function (new_value, old_value) {
+        handler: function (new_value) {
           this.transUser = JSON.parse(JSON.stringify(this.injectUser));
         },
         deep: true
       },
     },
     methods: {
+      focusInput: function () {
+        const container = this.$el.querySelector(".chats-container");
+        container.scrollTop = container.scrollHeight;
+        this.$refs.inputText.focus();
+      },
       clickSend: function(event: KeyboardEvent) {
         if (!this.msg) { return; }
 

@@ -29,6 +29,14 @@ declare interface sendingMsg {
   selectAvatarId: number;
   uuid: string;
 }
+
+declare interface preSendMsg {
+  type: number;
+  nickname: string;
+  selectAvatarId: number;
+  uuid: string;
+}
+
 interface loginInfo {
   nickname: string;
   uuid: number;
@@ -41,7 +49,6 @@ declare interface startPopupData {
   uuid: string;
   nickname: string;
 };
-
 
 const app = createApp(App);
 app.config.unwrapInjectedRef = true;
