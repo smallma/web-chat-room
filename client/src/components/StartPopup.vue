@@ -11,7 +11,7 @@
       </div>
 
       <div class="start-avatars">
-        <Avatar 
+        <Avatar
           v-for="avatarIndex in avatarCount"
           :index="avatarIndex"
           :key="avatarIndex"
@@ -30,36 +30,36 @@
 </template>
 
 <script lang="ts">
-  import Avatar from './Avatar.vue'
+import Avatar from './Avatar.vue';
 
-  export default {
-    components: {
-      Avatar
+export default {
+  components: {
+    Avatar,
+  },
+  data() {
+    return {
+      avatarCount: Array(24).fill().map((_, index) => 1 + index),
+      selectAvatarId: 1,
+      uuid: `${Math.floor(new Date().getTime())}-${Math.floor(Math.random() * 100000)}`,
+      nickname: 'Nickname',
+    };
+  },
+  methods: {
+    clickAvatar(event: PointerEvent) {
+      const selectId:string = event.target.getAttribute('data-id');
+      this.selectAvatarId = parseInt(selectId, 10);
     },
-    data() {
-      return {
-        avatarCount: Array(24).fill().map((_, index) => 1 + index),
-        selectAvatarId: 1,
-        uuid: Math.floor(new Date().getTime()) + '-' +  Math.floor(Math.random() * 100000),
-        nickname: 'Nickname'
+    clickJoin() {
+      const joinInfo = {
+        nickname: this.nickname,
+        uuid: this.uuid,
+        selectAvatarId: this.selectAvatarId,
       };
-    },
-    methods: {
-      clickAvatar: function(event: PointerEvent) {
-        const selectId:string = event.target.getAttribute('data-id');
-        this.selectAvatarId = parseInt(selectId);
-      },
-      clickJoin: function(event: PointerEvent) {
-        const joinInfo = {
-          nickname: this.nickname,
-          uuid: this.uuid,
-          selectAvatarId: this.selectAvatarId
-        };
 
-        this.$emit('joinChatRoom', joinInfo);
-      }
-    }
-  }
+      this.$emit('joinChatRoom', joinInfo);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -103,7 +103,7 @@
         color: #999;
         font-size: 16px;
       }
-    
+
     }
 
     .start-container {

@@ -51,3 +51,5 @@ jest
 - [test-unit mixins](https://github.com/deepjyoti30/ytmdl-web-v2/blob/master/tests/__tests__/mixins.settings.test.js)
 
 - [typescript event](https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_dom_d_.pointerevent.html)
+
+- [Group Typescript Interface](https://github.com/alm-tools/alm/blob/master/src/common/types.ts)

@@ -1,10 +1,10 @@
 <template>
-  <div 
+  <div
     class="chat"
     v-bind:class="{mine:user.uuid == chat.uuid, 'is-join':chat.type == 1}"
   >
     <div class="chat-avatar">
-        <Avatar 
+        <Avatar
           :key="chat.msgid"
           :data-id="chat.msgid"
           :index="chat.selectAvatarId"
@@ -18,24 +18,23 @@
 </template>
 
 <script lang="ts">
-  import Avatar from './Avatar.vue'
-  import { mapState } from "vuex";
+import Avatar from './Avatar.vue';
 
-  export default {
-    components: {
-      Avatar
+export default {
+  components: {
+    Avatar,
+  },
+  props: {
+    chat: {
+      type: Object,
+      required: true,
     },
-    props: {
-      chat: {
-        type: Object,
-        required: true
-      },
-      user: {
-        type: Object,
-        required: true
-      }
+    user: {
+      type: Object,
+      required: true,
     },
-  }
+  },
+};
 </script>
 
 <style lang="scss" scoped>

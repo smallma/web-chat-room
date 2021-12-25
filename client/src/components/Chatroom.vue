@@ -2,7 +2,7 @@
   <div class="chatroom">
     <div class="chatroom-chats">
       <div class="chats-container">
-        <Chat 
+        <Chat
           v-for="chat in transWsRes"
           :chat="chat"
           :key="chat.msgid"
@@ -12,7 +12,7 @@
     </div>
     <div class="chatroom-send">
       <div class="send-text" v-on:keyup.enter="clickSend">
-        <input 
+        <input
           type= "text"
           v-model.trim="msg"
           placeholder="Say Hello!"
@@ -29,61 +29,61 @@
 </template>
 
 <script lang="ts">
-  import { inject } from "vue";
-  import Chat from './Chat.vue'
+import { inject } from 'vue';
+import Chat from './Chat.vue';
 
-  export default {
-    inject: ['injectWsRes', 'injectUser', 'mixinWebsocket'],
-    components: {
-      Chat
-    },
-    data() {
-      return {
-        msg: '',
-        transWsRes: [],
-        transUser: {},
-      }
-    },
-    watch: {
-      injectWsRes: {
-        handler: function (new_value) {
-          this.transWsRes = JSON.parse(JSON.stringify(new_value));
+export default {
+  inject: ['injectWsRes', 'injectUser', 'mixinWebsocket'],
+  components: {
+    Chat,
+  },
+  data() {
+    return {
+      msg: '',
+      transWsRes: [],
+      transUser: {},
+    };
+  },
+  watch: {
+    injectWsRes: {
+      handler(new_value: Array<receiveMsgData>): void {
+        this.transWsRes = JSON.parse(JSON.stringify(new_value));
 
-          this.$nextTick(() => {
-            this.focusInput();
-          });
-        },
-        deep: true
+        this.$nextTick(() => {
+          this.focusInput();
+        });
       },
-      injectUser: {
-        handler: function (new_value) {
-          this.transUser = JSON.parse(JSON.stringify(this.injectUser));
-        },
-        deep: true
-      },
+      deep: true,
     },
-    methods: {
-      focusInput: function () {
-        const container = this.$el.querySelector(".chats-container");
-        container.scrollTop = container.scrollHeight;
-        this.$refs.inputText.focus();
+    injectUser: {
+      handler(_new_value: loginInfo) {
+        this.transUser = JSON.parse(JSON.stringify(this.injectUser));
       },
-      clickSend: function(event: KeyboardEvent) {
-        if (!this.msg) { return; }
+      deep: true,
+    },
+  },
+  methods: {
+    focusInput() {
+      const container = this.$el.querySelector('.chats-container');
+      container.scrollTop = container.scrollHeight;
+      this.$refs.inputText.focus();
+    },
+    clickSend(_event: KeyboardEvent) {
+      if (!this.msg) { return; }
 
-        const sendingMsg:sendingMsg = {
-          type: 2,
-          msg: this.msg,
-          nickname: this.transUser.nickname,
-          selectAvatarId: this.transUser.selectAvatarId,
-          uuid: this.transUser.uuid
-        };
+      const sendingMsg:sendingMsg = {
+        type: 2,
+        msg: this.msg,
+        nickname: this.transUser.nickname,
+        selectAvatarId: this.transUser.selectAvatarId,
+        uuid: this.transUser.uuid,
+      };
 
-        this.mixinWebsocket.websocketsend(JSON.stringify(sendingMsg));
-        this.msg = ''; 
-      }
-    }
-  }
+      this.mixinWebsocket.websocketsend(JSON.stringify(sendingMsg));
+      this.msg = '';
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

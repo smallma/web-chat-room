@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { 
   getDate,
   handleBroadcastMsg,
-  handleType1Msg,
-  handleType2Msg,
+  handleTypeJoinMsg,
+  handleTypeChatMsg,
   handlReceiveMsg,
   // createWs,
   // handleWssOpen,
@@ -43,8 +43,8 @@ describe('handleBroadcastMsg', function() {
   });
 });
 
-let users = [];
-describe('handleType1Msg', function() {
+let users: { nickname: string; }[] = [];
+describe('handleTypeJoinMsg', function() {
   it('test output is correct', function() {
     const inputData = {
       type: 1,
@@ -66,7 +66,7 @@ describe('handleType1Msg', function() {
       nickname: inputData.nickname
     };
 
-    const result = handleType1Msg(inputData);
+    const result = handleTypeJoinMsg(inputData);
 
     expect(result.type).equal(predict.type);
     expect(result.uuid).equal(predict.uuid);
@@ -78,7 +78,7 @@ describe('handleType1Msg', function() {
 });
 
 
-describe('handleType2Msg', function() {
+describe('handleTypeChatMsg', function() {
   it('test output is correct', function() {
     const inputData = {
       type: 2,
@@ -98,7 +98,7 @@ describe('handleType2Msg', function() {
       nickname: inputData.nickname
     };
 
-    const result = handleType2Msg(inputData);
+    const result = handleTypeChatMsg(inputData);
 
     expect(result.type).equal(predict.type);
     expect(result.uuid).equal(predict.uuid);

@@ -25,8 +25,7 @@ describe('Chatroom.vue', () => {
 })
 
 describe('Chatroom.vue', () => {
-
-  it('test method updateLoginInfo',() => {
+  it('test method setWsRes',() => {
     process.env.VUE_APP_WS_URL = 'ws://localhost:8001';
 
     const actual = {

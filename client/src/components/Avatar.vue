@@ -5,25 +5,25 @@
 </template>
 
 <script lang="ts">
-  export default {
-    props: {
-      index: {
-        type: Number,
-        required: true,
-        default: 1
-      },
-      currentSelectIndex: {
-        type: Number,
-        required: false,
-        default: 1
-      }
+export default {
+  props: {
+    index: {
+      type: Number,
+      required: true,
+      default: 1,
     },
-    methods: {
-      isActive: function() {
-        return this.currentSelectIndex === this.index ? 'active' : '';
-      }
-    }
-  }
+    currentSelectIndex: {
+      type: Number,
+      required: false,
+      default: 1,
+    },
+  },
+  methods: {
+    isActive() {
+      return this.currentSelectIndex === this.index ? 'active' : '';
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -56,7 +56,7 @@
         background-position: -92px -37px;
       }
     }
-    
+
     &.avatar-3 {
       .avatar-img {
         background-position: -148px -37px;
@@ -92,7 +92,7 @@
         background-position: -92px -94px;
       }
     }
-    
+
     &.avatar-9 {
       .avatar-img {
         background-position: -148px -94px;
@@ -128,7 +128,7 @@
         background-position: -92px -150px;
       }
     }
-    
+
     &.avatar-15 {
       .avatar-img {
         background-position: -148px -150px;
@@ -164,7 +164,7 @@
         background-position: -92px -206px;
       }
     }
-    
+
     &.avatar-21 {
       .avatar-img {
         background-position: -148px -206px;

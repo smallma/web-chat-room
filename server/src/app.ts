@@ -1,11 +1,10 @@
 import * as WebSocket from 'ws';
-import { pipe } from 'fp-ts/function'
-import { Either, tryCatch, isRight } from 'fp-ts/Either'
+import { pipe } from 'fp-ts/function';
+import { isRight } from 'fp-ts/Either';
 import * as J from 'fp-ts/Json';
 
-
 type userType = { nickname: string };
-let Users:userType[] = [];
+const Users:userType[] = [];
 interface jsonMsg {
   type: number;
   nickname: string;
@@ -26,10 +25,6 @@ interface broadcastMsg {
   selectAvatarId?: number;
   nickname?: string;
 }
-interface Event {
-  message: string;
-  [key: string]: any;
-}
 
 interface emptyDict {
 }
@@ -45,7 +40,7 @@ function handleBroadcastMsg(wss: any, msg: string):void {
   });
 }
 
-function handleType1Msg(jsonMsg: jsonMsg):broadcastMsg {
+function handleTypeJoinMsg(jsonMsg:jsonMsg):broadcastMsg {
   const getTime = new Date().getTime();
   Users.push({
     nickname: jsonMsg.nickname,
@@ -56,16 +51,16 @@ function handleType1Msg(jsonMsg: jsonMsg):broadcastMsg {
     msgid: getTime,
     uuid: jsonMsg.uuid,
     date: getDate(),
-    msg: jsonMsg.nickname + ' join chat room',
+    msg: `${jsonMsg.nickname} join chat room`,
     users: Users,
     selectAvatarId: jsonMsg.selectAvatarId,
-    nickname: jsonMsg.nickname
+    nickname: jsonMsg.nickname,
   };
-  
+
   return broadcastMsg;
 }
 
-function handleType2Msg(jsonMsg: jsonMsg):broadcastMsg {
+function handleTypeChatMsg(jsonMsg:jsonMsg):broadcastMsg {
   const getTime = new Date().getTime();
 
   const broadcastMsg:broadcastMsg = {
@@ -76,33 +71,33 @@ function handleType2Msg(jsonMsg: jsonMsg):broadcastMsg {
     msg: jsonMsg.msg,
     users: Users,
     selectAvatarId: jsonMsg.selectAvatarId,
-    nickname: jsonMsg.nickname
+    nickname: jsonMsg.nickname,
   };
 
   return broadcastMsg;
 }
 
 function handlReceiveMsg(jsonMsg: jsonMsg):broadcastMsg {
-  const getTime:number = new Date().getTime();
   const msgType:number = jsonMsg.type;
-  let broadcastMsg:broadcastMsg|emptyDict = {};
-  switch(msgType) {
+  let broadcastMsg:broadcastMsg|{} = {};
+  switch (msgType) {
     case 1:
-      broadcastMsg = handleType1Msg(jsonMsg);
+      broadcastMsg = handleTypeJoinMsg(jsonMsg);
       break;
     case 2:
-      broadcastMsg = handleType2Msg(jsonMsg);
+      broadcastMsg = handleTypeChatMsg(jsonMsg);
       break;
     default:
-      console.log('out of options');
+      // console.log('out of options');
+      break;
   }
 
   return broadcastMsg;
 }
 
 function createWs(port:number):any {
-  const wss = new WebSocket.WebSocketServer({ port: port });
-  wss.on('error', function(event: Event) {
+  const wss = new WebSocket.WebSocketServer({ port });
+  wss.on('error', (): void => {
     wss.close();
   });
 
@@ -110,7 +105,7 @@ function createWs(port:number):any {
 }
 
 function handleWssOpen(wss:WebSocket):WebSocket {
-  wss.on('open', (event:Event) => {
+  wss.on('open', (): void => {
     console.log('Server connected');
   });
 
@@ -118,14 +113,14 @@ function handleWssOpen(wss:WebSocket):WebSocket {
 }
 
 function handleWssClose(wss:WebSocket):WebSocket {
-  wss.on('close', (event:Event) => {
+  wss.on('close', (): void => {
     console.log('Server disconnected');
   });
 
   return wss;
 }
 
-function transferToJsonMsg (reveiveData:string):jsonMsg|void {
+function transferToJsonMsg(reveiveData:string):jsonMsg|void {
   if (!isRight(J.parse(reveiveData))) { return; }
 
   const jsonMsg:jsonMsg = JSON.parse(reveiveData);
@@ -133,18 +128,18 @@ function transferToJsonMsg (reveiveData:string):jsonMsg|void {
   return jsonMsg;
 }
 
-function handleWssConnection (wss:WebSocket):void {
-  wss.on('connection', function connection(ws:WebSocket) {
-    ws.on('message', function message(reveiveData:string) {
+function handleWssConnection(wss:WebSocket):void {
+  wss.on('connection', (ws: WebSocket): void => {
+    ws.on('message', (reveiveData: string) => {
       const jsonMsg = transferToJsonMsg(reveiveData);
-      
+
       if (jsonMsg) {
-        const broadcastMsg:broadcastMsg|emptyDict = handlReceiveMsg(jsonMsg);
-        const stringMsg:string = JSON.stringify(broadcastMsg);
+        const broadcastMsg: broadcastMsg | emptyDict = handlReceiveMsg(jsonMsg);
+        const stringMsg: string = JSON.stringify(broadcastMsg);
         handleBroadcastMsg(wss, stringMsg);
       }
     });
-  }); 
+  });
 }
 
 function main(): void {
@@ -152,17 +147,17 @@ function main(): void {
     createWs(8001),
     handleWssOpen,
     handleWssClose,
-    handleWssConnection
+    handleWssConnection,
   );
 }
 
 main();
 
-export { 
+export {
   getDate,
   handleBroadcastMsg,
-  handleType1Msg,
-  handleType2Msg,
+  handleTypeJoinMsg,
+  handleTypeChatMsg,
   handlReceiveMsg,
   // createWs,
   // handleWssOpen,

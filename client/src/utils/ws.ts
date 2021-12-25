@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref, computed } from 'vue';
 
 interface user {
   nickname: string;
@@ -20,7 +20,6 @@ interface receiveMsg {
 
 const wsURL:string = process.env.VUE_APP_WS_URL || 'ws://localhost:8001';
 let ws:WebSocket;
-let testValue:string;
 
 function websocketsend(msg:string):void {
   ws.send(msg);
@@ -35,25 +34,25 @@ function websockemessage(receiveMsg:receiveMsg, cb:(msg:receiveMsgData) => void)
 
 function initWebsocket(cb:(msg:receiveMsgData)=>void):void {
   ws = new WebSocket(wsURL);
-  
-  ws.onopen = function(event: Event):void {
+
+  ws.onopen = (event: Event): void => {
     console.log('ws connecting: ', event);
   };
-  
-  ws.onerror = function(event:Event):void {
+
+  ws.onerror = (): void => {
     console.error('ws connect failed, error');
   };
-  
-  ws.onmessage = function(receiveMsg:receiveMsg):void {
+
+  ws.onmessage = (receiveMsg: receiveMsg): void => {
     websockemessage(receiveMsg, cb);
   };
-  
-  ws.onclose = function(event: Event):void {
+
+  ws.onclose = (): void => {
     console.log('ws close connection');
   };
 }
 export default {
   initWebsocket,
   websockemessage,
-  websocketsend
-}
+  websocketsend,
+};

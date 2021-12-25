@@ -2,14 +2,14 @@
   <div>
     <figure class="bg" />
     <transition>
-      <StartPopup 
+      <StartPopup
         v-if="injectStep === 0"
         @joinChatRoom="updateLoginInfo"
       />
     </transition>
-    
+
     <transition>
-      <Chatroom 
+      <Chatroom
         v-show="injectStep === 1"
       />
     </transition>
@@ -17,65 +17,59 @@
 </template>
 
 <script lang="ts">
-  import { computed } from "vue";
-  import mixinWebsocket from './utils/ws';
+import { computed } from 'vue';
+import mixinWebsocket from './utils/ws';
 
-  import StartPopup from './components/StartPopup.vue'
-  import Chatroom from './components/Chatroom.vue'
+import StartPopup from './components/StartPopup.vue';
+import Chatroom from './components/Chatroom.vue';
 
-  export default {
-    components: {
-      StartPopup,
-      Chatroom
+export default {
+  components: {
+    StartPopup,
+    Chatroom,
+  },
+  data() {
+    return {
+      injectWsRes: [],
+      injectUser: {},
+      injectStep: 0,
+    };
+  },
+  created() {
+    mixinWebsocket.initWebsocket((msg:receiveMsgData) => {
+      this.setWsRes(msg);
+    });
+  },
+  methods: {
+    sendMsg(broadcastMsg:preSendMsg): void {
+      mixinWebsocket.websocketsend(JSON.stringify(broadcastMsg));
     },
-    data() {
-      return {
-        wsRes: [],
-        chatInfo: [],
-        userInfo: {},
-        injectWsRes: [],
-        injectUser: {},
-        injectStep: 0,
-      }
-    },
-    created() {
-      mixinWebsocket.initWebsocket((msg:receiveMsgData) => {
-        this.setWsRes(msg)
-      })
-    },
-    methods: {
-      sendMsg: function(broadcastMsg:preSendMsg) {
-        mixinWebsocket.websocketsend(JSON.stringify(broadcastMsg));
-      },
-      updateLoginInfo: function(loginInfo: loginInfo) {
-        this.userInfo = loginInfo;
+    updateLoginInfo(loginInfo:loginInfo) {
+      const broadcastMsg = {
+        type: 1,
+        nickname: loginInfo.nickname,
+        selectAvatarId: loginInfo.selectAvatarId,
+        uuid: loginInfo.uuid,
+      };
 
-        const broadcastMsg = {
-          type: 1,
-          nickname: loginInfo.nickname,
-          selectAvatarId: loginInfo.selectAvatarId,
-          uuid: loginInfo.uuid
-        };
-
-        this.injectUser = loginInfo;
-        this.injectStep = 1;
-        this.sendMsg(broadcastMsg);
-      },
-      setWsRes: function(receiveMsgData:receiveMsgData) {
-        this.injectWsRes.push(receiveMsgData);
-      }
+      this.injectUser = loginInfo;
+      this.injectStep = 1;
+      this.sendMsg(broadcastMsg);
     },
-    provide() {
-      return {
-        injectStep: computed(()=> this.injectStep),
-        injectWsRes: computed(()=> this.injectWsRes),
-        injectUser: computed(()=> this.injectUser),
-        mixinWebsocket: mixinWebsocket,
-      }
-    }
-  }
+    setWsRes(receiveMsgData:receiveMsgData) {
+      this.injectWsRes.push(receiveMsgData);
+    },
+  },
+  provide(): any {
+    return {
+      injectStep: computed(() => this.injectStep),
+      injectWsRes: computed(() => this.injectWsRes),
+      injectUser: computed(() => this.injectUser),
+      mixinWebsocket,
+    };
+  },
+};
 </script>
-
 
 <style lang="scss">
 .framework-logo {
